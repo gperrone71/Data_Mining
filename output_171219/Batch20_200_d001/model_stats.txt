@@ -1,0 +1,16 @@
+
+Correctly Classified Instances         160               80      %
+Incorrectly Classified Instances        40               20      %
+Kappa statistic                          0.5046
+Mean absolute error                      0.2483
+Root mean squared error                  0.3927
+Relative absolute error                 57.3067 %
+Root relative squared error             83.7987 %
+Total Number of Instances              200     
+
+Class Details
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,538    0,074    0,778      0,538    0,636      0,521    0,851     0,673     0
+                 0,926    0,462    0,806      0,926    0,862      0,521    0,851     0,901     1
+Weighted Avg.    0,800    0,336    0,797      0,800    0,789      0,521    0,851     0,827     

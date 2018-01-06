@@ -1,0 +1,21 @@
+<objects.BatchConfig>
+  <nResources>0</nResources>
+  <nTasks>0</nTasks>
+  <maxX>0</maxX>
+  <maxY>0</maxY>
+  <iNumThreads>0</iNumThreads>
+  <bGenerateTestSet>true</bGenerateTestSet>
+  <bFullResourcesAvailability>true</bFullResourcesAvailability>
+  <bResReturnToStart>true</bResReturnToStart>
+  <bAllResourcesHaveSamePos>true</bAllResourcesHaveSamePos>
+  <cResourcesStartingPosition>C</cResourcesStartingPosition>
+  <dStartingPositionsSpread>0.0</dStartingPositionsSpread>
+  <bExtendedTimeWin>true</bExtendedTimeWin>
+  <iResMinStartingTime>0</iResMinStartingTime>
+  <iResMinAvailabilityTime>0</iResMinAvailabilityTime>
+  <iTskMinStartingTime>0</iTskMinStartingTime>
+  <iTskMinTimeWindowWidth>0</iTskMinTimeWindowWidth>
+  <iTskMinServiceTimeDuration>0</iTskMinServiceTimeDuration>
+  <iTskMaxServiceTimeDuration>0</iTskMaxServiceTimeDuration>
+  <iTskServiceTimeSpread>0</iTskServiceTimeSpread>
+</objects.BatchConfig>

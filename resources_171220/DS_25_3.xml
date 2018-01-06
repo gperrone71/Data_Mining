@@ -1,0 +1,577 @@
+<numTsk>25</numTsk>
+<numRsc>3</numRsc>
+<objects.Task>
+  <id>0</id>
+  <Description>Task#0</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>3</priority>
+  <resId>0</resId>
+  <duration>36</duration>
+  <node>
+    <id>0</id>
+    <latitude>63.76016683895907</latitude>
+    <longitude>54.34454295376218</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>290</startTime>
+    <endTime>326</endTime>
+  </timeint>
+  <capacity>0.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>1</id>
+  <Description>Task#1</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>3</priority>
+  <resId>0</resId>
+  <duration>114</duration>
+  <node>
+    <id>1</id>
+    <latitude>75.00508057220848</latitude>
+    <longitude>33.89000426088722</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>259</startTime>
+    <endTime>373</endTime>
+  </timeint>
+  <capacity>0.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>2</id>
+  <Description>Task#2</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>4</priority>
+  <resId>0</resId>
+  <duration>100</duration>
+  <node>
+    <id>2</id>
+    <latitude>95.92064326357853</latitude>
+    <longitude>35.216114113114614</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>420</startTime>
+    <endTime>520</endTime>
+  </timeint>
+  <capacity>6.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>3</id>
+  <Description>Task#3</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>2</priority>
+  <resId>0</resId>
+  <duration>32</duration>
+  <node>
+    <id>3</id>
+    <latitude>22.835699481666083</latitude>
+    <longitude>43.404504382742346</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>44</startTime>
+    <endTime>76</endTime>
+  </timeint>
+  <capacity>8.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>4</id>
+  <Description>Task#4</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>1</priority>
+  <resId>0</resId>
+  <duration>36</duration>
+  <node>
+    <id>4</id>
+    <latitude>39.90393590822182</latitude>
+    <longitude>69.11928725926633</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>226</startTime>
+    <endTime>262</endTime>
+  </timeint>
+  <capacity>3.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>5</id>
+  <Description>Task#5</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>2</priority>
+  <resId>0</resId>
+  <duration>118</duration>
+  <node>
+    <id>5</id>
+    <latitude>69.9781810467156</latitude>
+    <longitude>4.366596742699769</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>57</startTime>
+    <endTime>175</endTime>
+  </timeint>
+  <capacity>5.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>6</id>
+  <Description>Task#6</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>4</priority>
+  <resId>0</resId>
+  <duration>112</duration>
+  <node>
+    <id>6</id>
+    <latitude>22.670805406129368</latitude>
+    <longitude>28.3953095815926</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>239</startTime>
+    <endTime>351</endTime>
+  </timeint>
+  <capacity>2.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>7</id>
+  <Description>Task#7</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>1</priority>
+  <resId>0</resId>
+  <duration>90</duration>
+  <node>
+    <id>7</id>
+    <latitude>94.40978117153634</latitude>
+    <longitude>35.8587640741395</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>379</startTime>
+    <endTime>469</endTime>
+  </timeint>
+  <capacity>4.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>8</id>
+  <Description>Task#8</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>3</priority>
+  <resId>0</resId>
+  <duration>94</duration>
+  <node>
+    <id>8</id>
+    <latitude>50.33088888165857</latitude>
+    <longitude>49.750110442602946</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>91</startTime>
+    <endTime>185</endTime>
+  </timeint>
+  <capacity>7.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>9</id>
+  <Description>Task#9</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>1</priority>
+  <resId>0</resId>
+  <duration>24</duration>
+  <node>
+    <id>9</id>
+    <latitude>51.520963555789855</latitude>
+    <longitude>74.49078676639742</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>426</startTime>
+    <endTime>450</endTime>
+  </timeint>
+  <capacity>0.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>10</id>
+  <Description>Task#10</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>1</priority>
+  <resId>0</resId>
+  <duration>82</duration>
+  <node>
+    <id>10</id>
+    <latitude>96.92823621320711</latitude>
+    <longitude>82.10366330396019</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>391</startTime>
+    <endTime>473</endTime>
+  </timeint>
+  <capacity>6.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>11</id>
+  <Description>Task#11</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>4</priority>
+  <resId>0</resId>
+  <duration>86</duration>
+  <node>
+    <id>11</id>
+    <latitude>94.00492575168961</latitude>
+    <longitude>16.75732044202123</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>420</startTime>
+    <endTime>506</endTime>
+  </timeint>
+  <capacity>2.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>12</id>
+  <Description>Task#12</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>4</priority>
+  <resId>0</resId>
+  <duration>22</duration>
+  <node>
+    <id>12</id>
+    <latitude>33.88668929746152</latitude>
+    <longitude>77.07737569960089</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>189</startTime>
+    <endTime>211</endTime>
+  </timeint>
+  <capacity>4.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>13</id>
+  <Description>Task#13</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>4</priority>
+  <resId>0</resId>
+  <duration>52</duration>
+  <node>
+    <id>13</id>
+    <latitude>16.964415827871925</latitude>
+    <longitude>27.030424474067626</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>44</startTime>
+    <endTime>96</endTime>
+  </timeint>
+  <capacity>9.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>14</id>
+  <Description>Task#14</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>3</priority>
+  <resId>0</resId>
+  <duration>56</duration>
+  <node>
+    <id>14</id>
+    <latitude>74.93610907385985</latitude>
+    <longitude>36.847470407451176</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>203</startTime>
+    <endTime>259</endTime>
+  </timeint>
+  <capacity>7.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>15</id>
+  <Description>Task#15</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>4</priority>
+  <resId>0</resId>
+  <duration>34</duration>
+  <node>
+    <id>15</id>
+    <latitude>32.404499950751756</latitude>
+    <longitude>54.17981205017668</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>398</startTime>
+    <endTime>432</endTime>
+  </timeint>
+  <capacity>9.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>16</id>
+  <Description>Task#16</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>1</priority>
+  <resId>0</resId>
+  <duration>108</duration>
+  <node>
+    <id>16</id>
+    <latitude>6.547781441787748</latitude>
+    <longitude>87.28170298659161</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>53</startTime>
+    <endTime>161</endTime>
+  </timeint>
+  <capacity>8.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>17</id>
+  <Description>Task#17</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>3</priority>
+  <resId>0</resId>
+  <duration>74</duration>
+  <node>
+    <id>17</id>
+    <latitude>22.542030584967808</latitude>
+    <longitude>15.20966649618629</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>457</startTime>
+    <endTime>531</endTime>
+  </timeint>
+  <capacity>4.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>18</id>
+  <Description>Task#18</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>3</priority>
+  <resId>0</resId>
+  <duration>40</duration>
+  <node>
+    <id>18</id>
+    <latitude>68.80895087803218</latitude>
+    <longitude>82.22851517042326</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>19</startTime>
+    <endTime>59</endTime>
+  </timeint>
+  <capacity>4.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>19</id>
+  <Description>Task#19</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>4</priority>
+  <resId>0</resId>
+  <duration>92</duration>
+  <node>
+    <id>19</id>
+    <latitude>72.41234205922325</latitude>
+    <longitude>80.0272859005135</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>281</startTime>
+    <endTime>373</endTime>
+  </timeint>
+  <capacity>4.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>20</id>
+  <Description>Task#20</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>1</priority>
+  <resId>0</resId>
+  <duration>12</duration>
+  <node>
+    <id>20</id>
+    <latitude>34.21532903004385</latitude>
+    <longitude>15.553221460471288</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>351</startTime>
+    <endTime>363</endTime>
+  </timeint>
+  <capacity>1.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>21</id>
+  <Description>Task#21</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>3</priority>
+  <resId>0</resId>
+  <duration>42</duration>
+  <node>
+    <id>21</id>
+    <latitude>57.53747473449186</latitude>
+    <longitude>11.798197079991757</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>456</startTime>
+    <endTime>498</endTime>
+  </timeint>
+  <capacity>0.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>22</id>
+  <Description>Task#22</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>2</priority>
+  <resId>0</resId>
+  <duration>92</duration>
+  <node>
+    <id>22</id>
+    <latitude>98.86857394620621</latitude>
+    <longitude>43.25330373102616</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>448</startTime>
+    <endTime>540</endTime>
+  </timeint>
+  <capacity>4.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>23</id>
+  <Description>Task#23</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>3</priority>
+  <resId>0</resId>
+  <duration>8</duration>
+  <node>
+    <id>23</id>
+    <latitude>87.64756305917318</latitude>
+    <longitude>33.99947890922361</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>277</startTime>
+    <endTime>285</endTime>
+  </timeint>
+  <capacity>5.0</capacity>
+</objects.Task>
+<objects.Task>
+  <id>24</id>
+  <Description>Task#24</Description>
+  <type>T</type>
+  <type__id>1</type__id>
+  <priority>1</priority>
+  <resId>0</resId>
+  <duration>20</duration>
+  <node>
+    <id>24</id>
+    <latitude>86.96702616903355</latitude>
+    <longitude>71.57983058333322</longitude>
+  </node>
+  <region>1</region>
+  <timeint>
+    <startTime>83</startTime>
+    <endTime>103</endTime>
+  </timeint>
+  <capacity>0.0</capacity>
+</objects.Task>
+<objects.Resource>
+  <id>1</id>
+  <description>Technician01</description>
+  <region>1</region>
+  <availability>
+    <startTime>167</startTime>
+    <endTime>216</endTime>
+  </availability>
+  <breakTime>
+    <startTime>222</startTime>
+    <endTime>229</endTime>
+  </breakTime>
+  <origin>
+    <id>26</id>
+    <latitude>25.281027062219252</latitude>
+    <longitude>86.40647968382191</longitude>
+  </origin>
+  <destination>
+    <id>26</id>
+    <latitude>25.281027062219252</latitude>
+    <longitude>86.40647968382191</longitude>
+  </destination>
+  <capacity>0.0</capacity>
+  <skill>1</skill>
+</objects.Resource>
+<objects.Resource>
+  <id>2</id>
+  <description>Technician11</description>
+  <region>1</region>
+  <availability>
+    <startTime>466</startTime>
+    <endTime>483</endTime>
+  </availability>
+  <breakTime>
+    <startTime>291</startTime>
+    <endTime>294</endTime>
+  </breakTime>
+  <origin>
+    <id>28</id>
+    <latitude>35.208948843650745</latitude>
+    <longitude>7.25801162532157</longitude>
+  </origin>
+  <destination>
+    <id>28</id>
+    <latitude>35.208948843650745</latitude>
+    <longitude>7.25801162532157</longitude>
+  </destination>
+  <capacity>0.0</capacity>
+  <skill>3</skill>
+</objects.Resource>
+<objects.Resource>
+  <id>3</id>
+  <description>Technician21</description>
+  <region>1</region>
+  <availability>
+    <startTime>165</startTime>
+    <endTime>207</endTime>
+  </availability>
+  <breakTime>
+    <startTime>205</startTime>
+    <endTime>209</endTime>
+  </breakTime>
+  <origin>
+    <id>30</id>
+    <latitude>31.017253934308663</latitude>
+    <longitude>96.28234019394868</longitude>
+  </origin>
+  <destination>
+    <id>30</id>
+    <latitude>31.017253934308663</latitude>
+    <longitude>96.28234019394868</longitude>
+  </destination>
+  <capacity>0.0</capacity>
+  <skill>4</skill>
+</objects.Resource>

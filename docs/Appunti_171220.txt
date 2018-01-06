@@ -1,0 +1,6 @@
+BatchLauncher: dato un file batch (composto da più oggetti) memorizzato nella cartella resources, genera un DS, lo risolve e genera l'ARFF per ciascun oggetto
+BatchClassifier: dato un file batch ASSUMENDO che esistano già i dataset risolti in formato ARFF, usa il classificatore per ridurre i tempi
+
+Ergo:
+- i dataset in xml NON hanno l'attributo di classificazione
+- i files ARFF che corrispondono agli xml HANNO l'attributo di classificazione
