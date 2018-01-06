@@ -16,15 +16,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/weka-src/lib/arpack_combined_all.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/weka-src/lib/bounce.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/weka-src/lib/commons-compress-1.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/weka-src/lib/core.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/weka-src/lib/java-cup.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/weka-src/lib/JFlex.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/weka-src/lib/junit.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/weka-src/lib/mtj.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/Data_Mining/lib/commons-io-2.5.jar"/>
-	<classpathentry kind="lib" path="C:/Users/gperr/eclipse-workspace/Data_Mining_180105/Data_Mining/lib/commons-io-2.5-javadoc.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
