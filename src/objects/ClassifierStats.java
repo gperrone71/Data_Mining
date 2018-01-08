@@ -10,12 +10,20 @@ import utils.NumericUtils;
 /**
  * Describes and contains the statistics for the batch classifier
  * 
+ *  * 08/01/2018	Added timestamp, hash and instance name
+ * 
  * @author gperr
  *
  */
 public class ClassifierStats {
 
+	// information on date of execution
+	private String strFullTimeStamp;	// Full timestamp of the execution
+	private String strTimeStampDay;		// Timestamp (short version w/ only dates) 
+
 	// Information describing the instance
+	private String strInstanceName;		// "name" of the instance, i.e. its file name
+	private String strHash;				// hash code for the instance
 	private int numResources;			// number of resources in this execution
 	private double dbMaxX;				// maximum value for X
 	private double dbMaxY;				// maximum value for Y
@@ -102,8 +110,12 @@ public class ClassifierStats {
 		try {
 
 			// parse the fields and creates the return string accordingly
-			for (int i = 0; i < numDM; i++ )			
-					str += (fields[i].get(this) + ";");			
+			for (int i = 0; i < numDM; i++ ) {
+				if (fields[i].getType().isAssignableFrom(String.class))
+					str += (fields[i].get(this) + ";");
+				else
+					str += (fields[i].get(this) + ";").replace('.', ',');
+			}
 			
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
@@ -112,7 +124,7 @@ public class ClassifierStats {
 			e.printStackTrace();
 		}
 		
-		str = str.replace('.', ',');		// replace dots with commas as decimal separators
+//		str = str.replace('.', ',');		// replace dots with commas as decimal separators
 		
 		return str.substring(0, str.length()-1);
 	}
@@ -563,6 +575,38 @@ public class ClassifierStats {
 	 */
 	public void setDbPerUncorrectlyClassified(double dbPerUncorrectlyClassified) {
 		this.dbPerUncorrectlyClassified = dbPerUncorrectlyClassified;
+	}
+
+	public String getStrFullTimeStamp() {
+		return strFullTimeStamp;
+	}
+
+	public void setStrFullTimeStamp(String strFullTimeStamp) {
+		this.strFullTimeStamp = strFullTimeStamp;
+	}
+
+	public String getStrTimeStampDay() {
+		return strTimeStampDay;
+	}
+
+	public void setStrTimeStampDay(String strTimeStampDay) {
+		this.strTimeStampDay = strTimeStampDay;
+	}
+
+	public String getStrHash() {
+		return strHash;
+	}
+
+	public void setStrHash(String strHash) {
+		this.strHash = strHash;
+	}
+
+	public String getStrInstanceName() {
+		return strInstanceName;
+	}
+
+	public void setStrInstanceName(String strInstanceName) {
+		this.strInstanceName = strInstanceName;
 	}
 
 

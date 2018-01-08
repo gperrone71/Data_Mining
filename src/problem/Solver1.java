@@ -38,6 +38,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import org.netlib.arpack.Dmout;
+
 
 /**
  * Parses one of the generated datasets, loads the objects and solves it using jsprit toolkit
@@ -61,6 +63,10 @@ public class Solver1 {
 
 	private int numTasks = 0;
 	private int numResources = 0;
+	
+	private double dbMaxX = 0;
+	private double dbMaxY = 0;
+	private double dbTskDens = 0;
 	
 	private int sizeOfL = 0;
 
@@ -178,8 +184,6 @@ public class Solver1 {
         	// generates a service based on the information retrieved from the dataset
             Service service = Service.Builder.newInstance(tsk.getDescription())		// use task description as instance id
                     .addTimeWindow(tsk.getTimeint().getStartTime(), tsk.getTimeint().getEndTime())	
-//                    .addTimeWindow(220 + random.nextInt(50), 350)
-//                    .addTimeWindow(400 + random.nextInt(50), 550)
                     .addSizeDimension(0, 1)			// weight is set to 1
                     .setServiceTime(tsk.getServiceTime())					
                     .setLocation(Location.newInstance(tsk.getNode().getLatitude(), tsk.getNode().getLongitude()))	// sets position
@@ -218,8 +222,6 @@ public class Solver1 {
 
         // and stores it in the data member
         solFound = bestSolution;
-
-//        new VrpXMLWriter(problem, solutions).write("output/problem-with-solution.xml");
 
         if (bVerbose)
         	SolutionPrinter.print(problem, bestSolution, SolutionPrinter.Print.VERBOSE);
@@ -449,6 +451,36 @@ public class Solver1 {
 		return Math.sqrt(ycoord*ycoord + xcoord*xcoord); 
 	}
 
+	/**
+	 * Calculates the maximum values for maxX, maxY and the value for the tasks density
+	 * 
+	 */
+
+	public void calcMaxAndDensity() {
+		double dbTmpX = 0;
+		double dbTmpY = 0;
+		
+		double tmpX = 0;
+		double tmpY = 0;
+		
+		for (Task tsk : lstTasks) {
+			tmpX = tsk.getNode().getLatitude();
+			tmpY = tsk.getNode().getLongitude();
+
+			if ( tmpX > dbTmpX)
+				dbTmpX = tmpX;
+
+			if ( tmpY > dbTmpY)
+				dbTmpY = tmpY;
+
+		}
+		
+		dbMaxX = dbTmpX;
+		dbMaxY = dbTmpY;
+		dbTskDens = (double) lstTasks.size() / (dbTmpX*dbTmpY);
+				
+		return;
+	}
 	
 	/**
 	 * @return the lstTasks
@@ -656,6 +688,21 @@ public class Solver1 {
 			
 		
     }
+
+
+	public double getDbMaxX() {
+		return dbMaxX;
+	}
+
+
+	public double getDbMaxY() {
+		return dbMaxY;
+	}
+
+
+	public double getDbTskDens() {
+		return dbTskDens;
+	}
 
 
 }

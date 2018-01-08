@@ -9,7 +9,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.time.*;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.basic.BasicTableHeaderUI;
@@ -193,9 +196,6 @@ public class BatchClassifier {
 				// end of main loop: I have all instances but the test set loaded and can build the classifier
 				classifier.buildClassifier(dataTrain);
 			
-				// output generated model
-	//			System.out.println(classifier);
-			
 				// loads the test set
 				PerroUtils.print("Loading " + fileNameTestSet);
 				ArffLoader testLoader = new ArffLoader();
@@ -281,10 +281,20 @@ public class BatchClassifier {
 				tmpClassStat.setDbMaxY(maxY);
 				tmpClassStat.setiNumThreads(24);
 
-				// launch the solver on the original problem with 7 threads and stores the results			
+				// launch the solver on the original problem with the specified number of threads and stores the results			
 			    SolStats tmpSolStat = new SolStats();		    
 			    tmpSolStat = problemSolver.launchSolver(false, bTestSetResourcesReturnToOrigin, 24, strPath);
 
+			    // generate the information on timestamp and hash
+			    tmpClassStat.setStrFullTimeStamp(new SimpleDateFormat("dd/MM/yyyy HH.mm.ss").format(new Date()));
+			    tmpClassStat.setStrTimeStampDay(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+			    
+			    // store the file name of the instance
+			    tmpClassStat.setStrInstanceName(strPath + strXMLFileName);
+			    
+			    // generate the hash for this instance and save it to the statistical object
+			    tmpClassStat.setStrHash(PerroUtils.CRC32Calc(strPath + strXMLFileName));
+			    
 			    // and copies the relevant information in the ClassifierStats object
 				tmpClassStat.setNumTasks_UP(lstTasks.size());
 				tmpClassStat.setDbTasksDensity_UP(lstTasks.size() / (maxX * maxY));
@@ -414,7 +424,7 @@ public class BatchClassifier {
 			strList.add(tmp1.toString());
 		}
 		
-		PerroUtils.writeCSV(strFullPath+strNameOfBatch+"_stats.csv", strList);
+		PerroUtils.writeCSV(strFullFileName, strList);
 	}
 
 	

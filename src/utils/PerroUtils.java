@@ -1,6 +1,8 @@
 package utils;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -10,6 +12,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.CRC32;
+import java.util.zip.Checksum;
 
 import javax.swing.JOptionPane;
 
@@ -141,6 +145,46 @@ public class PerroUtils {
 		}
 	}
 
+
+	/**
+	 * Calculates the CRC32 for the first 1024 bytes of the file whose name and path is passed as argument
+	 * 
+	 * @author gperrone
+	 * 
+	 * @param String srcFile	FIle name with path of the file to be used for calculating CRC32
+	 * @return String The CRC formatted as string
+	 * @throws IOException
+	 * 
+	 */
+	
+	public static String CRC32Calc(String srcFileName) throws IOException {
+
+	    final InputStream in = new FileInputStream(srcFileName);
+
+        CRC32 checksum;
+        
+        checksum = new CRC32();
+        checksum.reset();
+
+	    try {
+
+	        final byte[] buffer = new byte[1024];
+	        
+	        int bytesRead = in.read(buffer);
+	        
+	        while (bytesRead >= 0) {
+	        	checksum.update(buffer, 0, bytesRead);
+	            bytesRead = in.read(buffer);
+	        }
+	    } catch (IOException e) {
+	        throw e;
+	    } finally {
+	        in.close();
+	    }
+	    
+	   return String.format("%x", checksum.getValue());
+	}
+	 
 	
 	
 }

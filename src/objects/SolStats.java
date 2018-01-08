@@ -300,5 +300,5 @@ public class SolStats {
 	public void setiTotServices(int iTotServices) {
 		this.iTotServices = iTotServices;
 	}
-	
+
 }

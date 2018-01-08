@@ -8,7 +8,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -231,17 +233,30 @@ public class ForwardClassifier {
 							    // generate a temp ClassifierStats object and starts populating it
 							    ClassifierStats tmpClassStat = new ClassifierStats();
 							    tmpClassStat.setNumResources(lstResources.size());
-//							    tmpClassStat.setDbMaxX(maxX);
-//								tmpClassStat.setDbMaxY(maxY);
 								tmpClassStat.setiNumThreads(24);
-
-								// launch the solver on the original problem with 24 threads and stores the results			
+						    
+							    // before launching the solver calculates maxX, maxY and tasks densities and store the info into the stats object
+							    problemSolver.calcMaxAndDensity();
+							    tmpClassStat.setDbMaxX(problemSolver.getDbMaxX());
+								tmpClassStat.setDbMaxY(problemSolver.getDbMaxY());
+								tmpClassStat.setDbTasksDensity_P(problemSolver.getDbTskDens());
+							    
+								// launch the solver and store the results into a temporary stats object
 							    SolStats tmpSolStat = new SolStats();		    	    
-							    tmpSolStat = problemSolver.launchSolver(false, true, 24, "fwd_output/");
+								tmpSolStat = problemSolver.launchSolver(false, true, 24, "fwd_output/");
 
+							    // generate the information on timestamp and hash
+							    tmpClassStat.setStrFullTimeStamp(new SimpleDateFormat("dd/MM/yyyy HH.mm.ss").format(new Date()));
+							    tmpClassStat.setStrTimeStampDay(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+							    
+							    // store the file name of the instance
+							    tmpClassStat.setStrInstanceName(strXMLFileName);
+							    
+							    // generate the hash for this instance and save it to the statistical object
+							    tmpClassStat.setStrHash(PerroUtils.CRC32Calc(strFullName));
+							    
 							    // and copies the relevant information in the ClassifierStats object
 								tmpClassStat.setNumTasks_UP(lstTasks.size());
-//								tmpClassStat.setDbTasksDensity_UP(lstTasks.size() / (maxX * maxY));
 								tmpClassStat.setNumSolutionsFound_UP(tmpSolStat.getNumSolutionsFound());
 								tmpClassStat.setDblExecutionTime_UP(tmpSolStat.getDblExecutionTime());
 								tmpClassStat.setiTotServiced_UP(tmpSolStat.getiTotServices());
