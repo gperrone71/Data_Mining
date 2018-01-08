@@ -1,0 +1,10 @@
+
+Total Number of Instances                0     
+Ignored Class Unknown Instances                 10     
+
+Class Details
+
+                 TP Rate  FP Rate  Precision  Recall   F-Measure  MCC      ROC Area  PRC Area  Class
+                 0,000    0,000    0,000      0,000    0,000      0,000    ?         ?         0
+                 0,000    0,000    0,000      0,000    0,000      0,000    ?         ?         1
+Weighted Avg.    NaN      NaN      NaN        NaN      NaN        NaN      NaN       NaN       

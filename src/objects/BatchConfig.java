@@ -26,6 +26,9 @@ import utils.PerroUtils;
  */
 public class BatchConfig {
 	
+	// number of instances to be generated of this type
+	private int nNumInstances;	// number of instances to be generated 
+	
 	// General Parameters
 	private int nResources;		// number of resources to be used for dataset generation
 	private int nTasks;			// number of tasks to be used for dataset generation
@@ -381,6 +384,16 @@ public class BatchConfig {
 	 */
 	public void setiNumThreads(int iNumThreads) {
 		this.iNumThreads = iNumThreads;
+	}
+
+
+	public int getnNumInstances() {
+		return nNumInstances;
+	}
+
+
+	public void setnNumInstances(int nNumInstances) {
+		this.nNumInstances = nNumInstances;
 	}
 
 

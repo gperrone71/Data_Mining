@@ -239,7 +239,7 @@ public class ForwardClassifier {
 							    problemSolver.calcMaxAndDensity();
 							    tmpClassStat.setDbMaxX(problemSolver.getDbMaxX());
 								tmpClassStat.setDbMaxY(problemSolver.getDbMaxY());
-								tmpClassStat.setDbTasksDensity_P(problemSolver.getDbTskDens());
+								tmpClassStat.setDbTasksDensity_UP(problemSolver.getDbTskDens());
 							    
 								// launch the solver and store the results into a temporary stats object
 							    SolStats tmpSolStat = new SolStats();		    	    
@@ -259,29 +259,38 @@ public class ForwardClassifier {
 								tmpClassStat.setNumTasks_UP(lstTasks.size());
 								tmpClassStat.setNumSolutionsFound_UP(tmpSolStat.getNumSolutionsFound());
 								tmpClassStat.setDblExecutionTime_UP(tmpSolStat.getDblExecutionTime());
-								tmpClassStat.setiTotServiced_UP(tmpSolStat.getiTotServices());
+								tmpClassStat.setiTotServiced_UP(tmpSolStat.getiTotServiced());
+								tmpClassStat.setiTotUnserviced_UP(tmpSolStat.getiTotUnserviced());
 								tmpClassStat.setDbTraveledDistance_UP(tmpSolStat.getDbTraveledDistance());
-								tmpClassStat.setDbCompletionTime_UP(tmpSolStat.getDbCompletionTime());
+								tmpClassStat.setDbOperationTime_UP(tmpSolStat.getDbOperationTime());
 								tmpClassStat.setDbWaitingTime_UP(tmpSolStat.getDbWaitingTime());
 								tmpClassStat.setDbTotalCosts_UP(tmpSolStat.getDbTotalCosts());
-															
+								tmpClassStat.setDbTimeWinViolation_UP(tmpSolStat.getDbTimeWinViolation());
+								tmpClassStat.setiNumVehiclesUsed_UP(tmpSolStat.getiNumVehiclesUsed());
+								
 								// generates another solver object using the pruned dataset
 								Solver1 prunedProblemSolver = new Solver1("fwd_output/", strPrunedXMLFileName);
 								
+								// calculates density for the pruned dataset and stores it into the stats file 
+								prunedProblemSolver.calcMaxAndDensity();
+								tmpClassStat.setDbTasksDensity_P(prunedProblemSolver.getDbTskDens());
+
 								// launch the solver on the pruned problem with 24 threads and stores the results
 							    tmpSolStat = prunedProblemSolver.launchSolver(false, true, 24, "fwd_output/");
 
 							    // and copies the relevant information in the ClassifierStats object in the section for the pruned dataset
 								tmpClassStat.setNumTasks_P(lstPrunedTasks.size());
-//								tmpClassStat.setDbTasksDensity_P(lstPrunedTasks.size() / (maxX * maxY));
 								tmpClassStat.setNumSolutionsFound_P(tmpSolStat.getNumSolutionsFound());
 								tmpClassStat.setDblExecutionTime_P(tmpSolStat.getDblExecutionTime());
-								tmpClassStat.setiTotServiced_P(tmpSolStat.getiTotServices());
+								tmpClassStat.setiTotServiced_P(tmpSolStat.getiTotServiced());
+								tmpClassStat.setiTotUnserviced_P(tmpSolStat.getiTotUnserviced());
 								tmpClassStat.setDbTraveledDistance_P(tmpSolStat.getDbTraveledDistance());
-								tmpClassStat.setDbCompletionTime_P(tmpSolStat.getDbCompletionTime());
+								tmpClassStat.setDbOperationTime_P(tmpSolStat.getDbOperationTime());
 								tmpClassStat.setDbWaitingTime_P(tmpSolStat.getDbWaitingTime());
 								tmpClassStat.setDbTotalCosts_P(tmpSolStat.getDbTotalCosts());
-
+								tmpClassStat.setDbTimeWinViolation_P(tmpSolStat.getDbTimeWinViolation());
+								tmpClassStat.setiNumVehiclesUsed_P(tmpSolStat.getiNumVehiclesUsed());
+								
 							    // add the stats and information on the model
 								tmpClassStat.setDbPrecision(eval.weightedPrecision());
 								tmpClassStat.setDbRecall(eval.weightedRecall());

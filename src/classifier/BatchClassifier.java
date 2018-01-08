@@ -88,7 +88,6 @@ public class BatchClassifier {
 		
 		do {
 			str = XMLUtils.returnNextXMLObject(lstString, BatchConfig.class, iStartRow);
-//			PerroUtils.print(str);
 			iStartRow = XMLUtils.getiEndRow();
 			if (str != "") {
 				// creates a new object and add it to the list		
@@ -118,251 +117,275 @@ public class BatchClassifier {
 
 		List<Task> lstTasks = new ArrayList<Task>();
 		List<Resource> lstResources = new ArrayList<Resource>();
+		List<FileParse> lstFileToBeParsed = new ArrayList<FileParse>();
 		
 		PerroUtils.print("\n-BATCH CLASSIFIER----------------------------------------------------------------");
 		PerroUtils.print("\nStarting training phase.");
 
-		// initial setup:
-		// clear the training test flag on all batch config datasets
-		for (BatchConfig tmpObj : lstConfigObj)
-			tmpObj.setbGenerateTestSet(false);		
+
+		// outer loop: loop for all ARFF files present in the specified output directory
+		final File filObj = new File(strPath);
+		PerroUtils.print(filObj.getPath());
 		
-	    try {
+		final FileNameExtensionFilter extensionFilter = new FileNameExtensionFilter("ARFF", "arff");
 
-	    	String strPath = "";
-	    	
-	    	for (BatchConfig objForCrossValidation : lstConfigObj) {
-	    		// outer loop:
-	    		// select the evaluation test set for the object currently loaded
-	    		objForCrossValidation.setbGenerateTestSet(true);
-
-	    		// init variables
-	    		List<Task> lstPrunedTasks = new ArrayList<Task>();
-	    		List<Resource> lstPrunedResources = new ArrayList<Resource>();
-
-	    		// generate a new AttributeSelectedClassifier
-			    AttributeSelectedClassifier classifier = new AttributeSelectedClassifier();
-			    			    
-			    // uses the first dataset to build the structure for the object that will contain the various instances
-			    BatchConfig tmp = lstConfigObj.get(0);	// takes the first dataset
-		    	ArffLoader initLoader = new ArffLoader();
-		    	String strFirstDataSet = generateARFFFileName(tmp, lstConfigObj);
+		// create a list of the .arff files that are available in the selected folder
+		for (final File fileInDir : filObj.listFiles()) {
+			if ( extensionFilter.accept(fileInDir) ) 
+				if (!fileInDir.isDirectory()) {
+					PerroUtils.print(fileInDir.getName());
+					FileParse tmp = new FileParse();
+					tmp.setStrFileName(fileInDir.getName());
+					tmp.setbTestSet(false);
+					lstFileToBeParsed.add(tmp);
+				}
+		}
+		
+		// outer loop: execute per each of the .arff file stored in the file list
+		for (FileParse tmpObj : lstFileToBeParsed)
+			tmpObj.setbTestSet(false);		
+		
+		    try {
 		    	
-		    	PerroUtils.print(" Using dataset #0 for structure generation ("+ strFirstDataSet + ")");
-				initLoader.setFile(new File(strFirstDataSet));
-//			    Instances dataTrain = initLoader.getDataSet();
-				Instances dataTrain = initLoader.getStructure();
-				dataTrain.setClassIndex(dataTrain.numAttributes() - 1);	
-		
-			    String fileNameTestSet = "";
-			    boolean bTestSetResourcesReturnToOrigin = false;
-			    double maxX = 0;	    
-			    double maxY = 0;
-			    
-				// main loop for training phase 		
-				for (int i = 0; i < lstConfigObj.size(); i++) {
-					
-					BatchConfig batchObj = lstConfigObj.get(i);
-					
-					int iBatchObj = lstConfigObj.indexOf(batchObj);
+		    	for (FileParse objFileParse : lstFileToBeParsed) {
+		    		// inner loop:
+		    		// select the evaluation test set for the object currently loaded
+		    		objFileParse.setbTestSet(true);
 	
-					// generates the file name of the arff corresponding to the job
-					String strDataSetFileName = generateARFFFileName(batchObj, lstConfigObj);			
-		
-					if (!batchObj.isbGenerateTestSet()) {			// skip if the dataset has to be used for test and evaluation
-						
-						PerroUtils.print(" Loading dataset for job #" + iBatchObj + " - " + strDataSetFileName);
+		    		// init variables
+		    		List<Task> lstPrunedTasks = new ArrayList<Task>();
+		    		List<Resource> lstPrunedResources = new ArrayList<Resource>();
+	
+		    		// generate a new AttributeSelectedClassifier
+				    AttributeSelectedClassifier classifier = new AttributeSelectedClassifier();
+				    			    
+				    // uses the first dataset to build the structure for the object that will contain the various instances
+			    	ArffLoader initLoader = new ArffLoader();
+			    	String strFirstDataSet = strPath + "/" + lstFileToBeParsed.get(0).getStrFileName();
+			    	
+			    	PerroUtils.print(" Using dataset #0 for structure generation ("+ strFirstDataSet + ")");
+					initLoader.setFile(new File(strFirstDataSet));
+					Instances dataTrain = initLoader.getStructure();
+					dataTrain.setClassIndex(dataTrain.numAttributes() - 1);	
 			
-				    	// loads the arff file corresponding to the current job
-				    	ArffLoader loader = new ArffLoader();    	
-						loader.setFile(new File(strDataSetFileName));
+				    String fileNameTestSet = "";
+				    boolean bTestSetResourcesReturnToOrigin = false;
+				    double maxX = 0;	    
+				    double maxY = 0;
+				    
+					// loop for training phase 		
+					for (FileParse tmpFP : lstFileToBeParsed) {
 							
-						// otherwise I am adding the instances to the original dataset
-						PerroUtils.print(" +--- Adding instances...");
-						Instances tmpInst = loader.getDataSet();
-						tmpInst.setClassIndex(tmpInst.numAttributes()-1);
-						dataTrain.addAll(tmpInst);
-					} 
-					else {
-						fileNameTestSet = strDataSetFileName;
-						bTestSetResourcesReturnToOrigin = batchObj.isbResReturnToStart();
-						maxX = batchObj.getMaxX();
-						maxY = batchObj.getMaxY();				
-					}
-				}
-				
-				PerroUtils.print(" Finished loading datasets - added " + dataTrain.numInstances() + " instances.");
-				
-				// end of main loop: I have all instances but the test set loaded and can build the classifier
-				classifier.buildClassifier(dataTrain);
-			
-				// loads the test set
-				PerroUtils.print("Loading " + fileNameTestSet);
-				ArffLoader testLoader = new ArffLoader();
-				testLoader.setFile(new File(fileNameTestSet));
-				Instances testSet = testLoader.getDataSet();
-				testSet.setClassIndex(testSet.numAttributes() - 1);
-				
-				// start evaluation
-				Evaluation eval = new Evaluation(dataTrain);
-				eval.evaluateModel(classifier, testSet);
-				System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+						// retrieve the file name of the arff corresponding to the job
+						String strDataSetFileName = strPath + "/" + tmpFP.getStrFileName();					
 						
+						if (!tmpFP.isbTestSet()) {			// skip if the dataset has to be used for test and evaluation
+							
+							PerroUtils.print(" Loading #" + lstFileToBeParsed.indexOf(tmpFP) + " - " + strDataSetFileName);
+				
+					    	// loads the arff file corresponding to the current job
+					    	ArffLoader loader = new ArffLoader();    	
+							loader.setFile(new File(strDataSetFileName));
+								
+							PerroUtils.print(" +--- Adding instances...");
+							Instances tmpInst = loader.getDataSet();
+							tmpInst.setClassIndex(tmpInst.numAttributes()-1);
+							dataTrain.addAll(tmpInst);
+						} 
+						else {
+							fileNameTestSet = strDataSetFileName;
+/*							bTestSetResourcesReturnToOrigin = batchObj.isbResReturnToStart();
+							maxX = batchObj.getMaxX();
+							maxY = batchObj.getMaxY(); */				
+						}
+					}
+					
+					PerroUtils.print(" Finished loading datasets - added " + dataTrain.numInstances() + " instances.");
+					
+					// end of main loop: I have all instances but the test set loaded and can build the classifier
+					classifier.buildClassifier(dataTrain);
+				
+					// loads the test set
+					PerroUtils.print("\nLoading " + fileNameTestSet + " as test set.");
+					ArffLoader testLoader = new ArffLoader();
+					testLoader.setFile(new File(fileNameTestSet));
+					Instances testSet = testLoader.getDataSet();
+					testSet.setClassIndex(testSet.numAttributes() - 1);
+					
+					// start evaluation
+					Evaluation eval = new Evaluation(dataTrain);
+					eval.evaluateModel(classifier, testSet);
+					System.out.println(eval.toSummaryString("\nResults\n======\n", false));
+							
+		
+					// Print some statistics on evaluation
+					for (int i = 0; i <= 1; i++) {
+						PerroUtils.print("Class " + i +": #of True Positives "+eval.numTruePositives(i) + " # of False Positives " + eval.numFalsePositives(i));
+					}
+					
+					double confMatr[][] = eval.confusionMatrix();
+					
+					PerroUtils.print("\nConfusion matrix\n----------------");
+					PerroUtils.print("           0     1");
+					for (int i = 0; i <= 1; i++) {
+						System.out.print("Class " + i + " : ");
+						for (int j = 0; j <= 1; j++)
+							System.out.print("["+ confMatr[i][j] + "]");
+						System.out.println("");
+					}
+					
+					PerroUtils.print("\n" + eval.toClassDetailsString());
+		
+					
+					// now with the trained model I generate a new dataset for the test set to be solved separately
+					// first of all I will load the non-classified version of the test set
+			    	PerroUtils.print("*** Loading empty test set with filename :" + fileNameTestSet, true);
+			    	
+					ArffLoader emptyDSLoader = new ArffLoader();
+			    	emptyDSLoader.setFile(new File(fileNameTestSet));
+			    	Instances unlabeledTS = emptyDSLoader.getDataSet();
+					unlabeledTS.setClassIndex(unlabeledTS.numAttributes() - 1);
+				
+					
+			    	// then I have to load in memory the dataset in xml format corresponding to the test set
+			    	// first of all I have to extract paths and filenames of the xml dataset
+			    	String strFullName = fileNameTestSet.substring(0,  fileNameTestSet.indexOf(".")) + ".xml";
+			    	String strPathTmp = strFullName.substring(0, strFullName.lastIndexOf('/') + 1);
+			    	String strXMLFileName = strFullName.substring(strFullName.lastIndexOf('/') + 1);
+			    	
+			    	// finally I can load the xml file and populate the lists
+					Solver1 problemSolver = new Solver1(strPathTmp, strXMLFileName);
+					lstTasks = problemSolver.getLstTasks();
+					lstResources = problemSolver.getLstResources();
+		
+					// and using the strings generated so far save on disk stats for the generated classifier
+					Charset chEnc = Charset.forName("utf-8");
+					File tmpFile = new File(strPathTmp + "model_stats_" + lstFileToBeParsed.indexOf(objFileParse) + ".txt");
+					FileUtils.writeStringToFile(tmpFile, eval.toSummaryString(), chEnc);
+					FileUtils.writeStringToFile(tmpFile, eval.toClassDetailsString("\nClass Details\n"), chEnc, true);		
+		
+					// copy the resources in the pruned version (it won't change)
+					lstPrunedResources = lstResources;
+		
+					// populate the pruned tasks only with the tasks that are classified as schedulable
+				    for (int i = 0; i < unlabeledTS.numInstances(); i++) {
+				    	double clsLabel = classifier.classifyInstance(unlabeledTS.instance(i));
+				    	if (clsLabel == 1)
+				    		lstPrunedTasks.add(lstTasks.get(i));	    		
+				    }
+				    
+				    PerroUtils.print("*** Created pruned dataset with " + lstPrunedTasks.size() + " tasks.", true);
+				    
+				    // write the XML file on disk
+				    GenerateDataSet tmpGDS = new GenerateDataSet();
+				    String strPrunedXMLFileName = tmpGDS.WriteDataSetOnFile(lstPrunedTasks, lstPrunedResources, strPathTmp , "_" + lstFileToBeParsed.indexOf(objFileParse) + "_PRUNED" );
+				    
+				    // generate a temp ClassifierStats object and starts populating it
+				    ClassifierStats tmpClassStat = new ClassifierStats();
+				    tmpClassStat.setNumResources(lstResources.size());
+					tmpClassStat.setiNumThreads(24);
 	
-				// Print some statistics on evaluation
-				for (int i = 0; i <= 1; i++) {
-					PerroUtils.print("Class " + i +": #of True Positives "+eval.numTruePositives(i) + " # of False Positives " + eval.numFalsePositives(i));
+					// launch the solver on the original problem with the specified number of threads and stores the results			
+				    SolStats tmpSolStat = new SolStats();		    
+				    tmpSolStat = problemSolver.launchSolver(false, bTestSetResourcesReturnToOrigin, 24, strPathTmp);
+
+				    // calculates maxX and maxY and density
+				    problemSolver.calcMaxAndDensity();
+				    tmpClassStat.setDbMaxX(problemSolver.getDbMaxX());
+					tmpClassStat.setDbMaxY(problemSolver.getDbMaxY());
+				    
+				    // generate the information on timestamp and hash
+				    tmpClassStat.setStrFullTimeStamp(new SimpleDateFormat("dd/MM/yyyy HH.mm.ss").format(new Date()));
+				    tmpClassStat.setStrTimeStampDay(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
+				    
+				    // store the file name of the instance
+				    tmpClassStat.setStrInstanceName(strPathTmp + strXMLFileName);
+				    
+				    // generate the hash for this instance and save it to the statistical object
+				    tmpClassStat.setStrHash(PerroUtils.CRC32Calc(strPathTmp + strXMLFileName));
+				    
+				    // and copies the relevant information in the ClassifierStats object
+					tmpClassStat.setNumTasks_UP(lstTasks.size());
+					tmpClassStat.setDbTasksDensity_UP(lstTasks.size() / (tmpClassStat.getDbMaxX() * tmpClassStat.getDbMaxY()));
+					tmpClassStat.setNumSolutionsFound_UP(tmpSolStat.getNumSolutionsFound());
+					tmpClassStat.setDblExecutionTime_UP(tmpSolStat.getDblExecutionTime());
+					tmpClassStat.setiTotServiced_UP(tmpSolStat.getiTotServiced());
+					tmpClassStat.setiTotUnserviced_UP(tmpSolStat.getiTotUnserviced());
+					tmpClassStat.setDbTraveledDistance_UP(tmpSolStat.getDbTraveledDistance());
+					tmpClassStat.setDbTotalCosts_UP(tmpSolStat.getDbTotalCosts());
+					tmpClassStat.setiNumVehiclesUsed_UP(tmpSolStat.getiNumVehiclesUsed());
+					
+					// times				
+					tmpClassStat.setDbTimeWinViolation_UP(tmpSolStat.getDbTimeWinViolation());
+					tmpClassStat.setDbOperationTime_UP(tmpSolStat.getDbOperationTime());
+					tmpClassStat.setDbWaitingTime_UP(tmpSolStat.getDbWaitingTime());
+					tmpClassStat.setDbServiceTime_UP(tmpSolStat.getDbServiceTime());
+					tmpClassStat.setDbTransportTime_UP(tmpSolStat.getDbTransportTime());
+					
+					// generates another solver object using the pruned dataset 
+					Solver1 prunedProblemSolver = new Solver1(strPathTmp, strPrunedXMLFileName);
+					
+					// launch the solver on the pruned problem with 7 threads and stores the results
+				    tmpSolStat = prunedProblemSolver.launchSolver(false, bTestSetResourcesReturnToOrigin, 24, strPathTmp);
+	
+				    // and copies the relevant information in the ClassifierStats object in the section for the pruned dataset
+					tmpClassStat.setNumTasks_P(lstPrunedTasks.size());
+					tmpClassStat.setDbTasksDensity_P(lstPrunedTasks.size() / (maxX * maxY));
+					tmpClassStat.setNumSolutionsFound_P(tmpSolStat.getNumSolutionsFound());
+					tmpClassStat.setDblExecutionTime_P(tmpSolStat.getDblExecutionTime());
+					tmpClassStat.setiTotServiced_P(tmpSolStat.getiTotServiced());
+					tmpClassStat.setiTotUnserviced_P(tmpSolStat.getiTotUnserviced());
+					tmpClassStat.setDbTraveledDistance_P(tmpSolStat.getDbTraveledDistance());
+					tmpClassStat.setDbTotalCosts_P(tmpSolStat.getDbTotalCosts());
+					tmpClassStat.setiNumVehiclesUsed_P(tmpSolStat.getiNumVehiclesUsed());
+	
+					// times				
+					tmpClassStat.setDbTimeWinViolation_P(tmpSolStat.getDbTimeWinViolation());
+					tmpClassStat.setDbOperationTime_P(tmpSolStat.getDbOperationTime());
+					tmpClassStat.setDbWaitingTime_P(tmpSolStat.getDbWaitingTime());
+					tmpClassStat.setDbServiceTime_P(tmpSolStat.getDbServiceTime());
+					tmpClassStat.setDbTransportTime_P(tmpSolStat.getDbTransportTime());
+	
+					
+				    // add the stats and information on the model
+					tmpClassStat.setDbPrecision(eval.weightedPrecision());
+					tmpClassStat.setDbRecall(eval.weightedRecall());
+					tmpClassStat.setDbAbsCorrectlyClassified(eval.correct());
+					tmpClassStat.setDbPerCorrectlyClassified(eval.pctCorrect());
+					tmpClassStat.setDbAbsUncorrectlyClassified(eval.incorrect());
+					tmpClassStat.setDbPerUncorrectlyClassified(eval.pctIncorrect());
+					
+					// add the stats on the differences between the two executions
+					double dbExecTimDiff = tmpClassStat.getDblExecutionTime_P()-tmpClassStat.getDblExecutionTime_UP();
+					tmpClassStat.setDbAbsExecTimeDiff(dbExecTimDiff);
+					tmpClassStat.setDbPerExecTimeDiff(dbExecTimDiff/tmpClassStat.getDblExecutionTime_UP());
+					
+					double dbServicedDiff = tmpClassStat.getiTotServiced_P()-tmpClassStat.getiTotServiced_UP();
+					tmpClassStat.setDbAbsSrvcdTasksDiff(dbServicedDiff);
+					tmpClassStat.setDbPerSrvcdTasksDiff(dbServicedDiff/tmpClassStat.getiTotServiced_UP());
+					
+					// add the temp object to the list
+					lstClassifierStats.add(tmpClassStat);
+	
+		    		// de-select the evaluation test set for the object currently loaded dataset (there must be only one dataset set for evaluation per loop iteration)
+		    		objFileParse.setbTestSet(false);
+	
+		    	}			
+	
+				// writes the stats to disk
+				classifierStatsToCSV(false, strPath, "_full", lstClassifierStats);
+	
+	/*	
+				 String[] options = new String[2];
+				 options[0] = "-t";
+				 options[1] = fileNameTestSet;
+				 System.out.println(Evaluation.evaluateModel(classifier, options));
+				 
+				for (String str : eval.getMetricsToDisplay()) {
+					PerroUtils.print(str);
 				}
-				
-				double confMatr[][] = eval.confusionMatrix();
-				
-				PerroUtils.print("\nConfusion matrix\n----------------");
-				PerroUtils.print("           0     1");
-				for (int i = 0; i <= 1; i++) {
-					System.out.print("Class " + i + " : ");
-					for (int j = 0; j <= 1; j++)
-						System.out.print("["+ confMatr[i][j] + "]");
-					System.out.println("");
-				}
-				
-				PerroUtils.print("\n" + eval.toClassDetailsString());
-	
-				
-				// now with the trained model I generate a new dataset for the test set to be solved separately
-				// first of all I will load the non-classified version of the test set
-
-//		    	String strEmptyDSName = returnFullFileNameWOExtension(fileNameTestSet) + "_TS.arff";
-		    	String strEmptyDSName = returnFullFileNameWOExtension(fileNameTestSet) + ".arff";
-				PerroUtils.print("*** Loading empty test set with filename :" + strEmptyDSName, true);
-		    	
-				ArffLoader emptyDSLoader = new ArffLoader();
-		    	emptyDSLoader.setFile(new File(strEmptyDSName));
-		    	Instances unlabeledTS = emptyDSLoader.getDataSet();
-				unlabeledTS.setClassIndex(unlabeledTS.numAttributes() - 1);
-			
-				
-		    	// then I have to load in memory the dataset in xml format corresponding to the test set
-		    	// first of all I have to extract paths and filenames of the xml dataset
-		    	String strFullName = fileNameTestSet.substring(0,  fileNameTestSet.indexOf("_stats")) + ".xml";
-		    	strPath = strFullName.substring(0, strFullName.lastIndexOf('/') + 1);
-		    	String strXMLFileName = strFullName.substring(strFullName.lastIndexOf('/') + 1);
-		    	
-		    	// finally I can load the xml file and populate the lists
-				Solver1 problemSolver = new Solver1(strPath, strXMLFileName);
-				lstTasks = problemSolver.getLstTasks();
-				lstResources = problemSolver.getLstResources();
-	
-				// and using the strings generated so far save on disk stats for the generated classifier
-				Charset chEnc = Charset.forName("utf-8");
-				File tmpFile = new File(strPath + "model_stats_" + lstConfigObj.indexOf(objForCrossValidation) + ".txt");
-				FileUtils.writeStringToFile(tmpFile, eval.toSummaryString(), chEnc);
-				FileUtils.writeStringToFile(tmpFile, eval.toClassDetailsString("\nClass Details\n"), chEnc, true);		
-	
-				// copy the resources in the pruned version (it won't change)
-				lstPrunedResources = lstResources;
-	
-				// populate the pruned tasks only with the tasks that are classified as schedulable
-			    for (int i = 0; i < unlabeledTS.numInstances(); i++) {
-			    	double clsLabel = classifier.classifyInstance(unlabeledTS.instance(i));
-			    	if (clsLabel == 1)
-			    		lstPrunedTasks.add(lstTasks.get(i));	    		
-			    }
-			    
-			    PerroUtils.print("*** Created pruned dataset with " + lstPrunedTasks.size() + " tasks.", true);
-			    
-			    // write the XML file on disk
-			    GenerateDataSet tmpGDS = new GenerateDataSet();
-			    String strPrunedXMLFileName = tmpGDS.WriteDataSetOnFile(lstPrunedTasks, lstPrunedResources, strPath , "_PRUNED_" + lstConfigObj.indexOf(objForCrossValidation));
-			    
-			    // generate a temp ClassifierStats object and starts populating it
-			    ClassifierStats tmpClassStat = new ClassifierStats();
-			    tmpClassStat.setNumResources(lstResources.size());
-			    tmpClassStat.setDbMaxX(maxX);
-				tmpClassStat.setDbMaxY(maxY);
-				tmpClassStat.setiNumThreads(24);
-
-				// launch the solver on the original problem with the specified number of threads and stores the results			
-			    SolStats tmpSolStat = new SolStats();		    
-			    tmpSolStat = problemSolver.launchSolver(false, bTestSetResourcesReturnToOrigin, 24, strPath);
-
-			    // generate the information on timestamp and hash
-			    tmpClassStat.setStrFullTimeStamp(new SimpleDateFormat("dd/MM/yyyy HH.mm.ss").format(new Date()));
-			    tmpClassStat.setStrTimeStampDay(new SimpleDateFormat("dd/MM/yyyy").format(new Date()));
-			    
-			    // store the file name of the instance
-			    tmpClassStat.setStrInstanceName(strPath + strXMLFileName);
-			    
-			    // generate the hash for this instance and save it to the statistical object
-			    tmpClassStat.setStrHash(PerroUtils.CRC32Calc(strPath + strXMLFileName));
-			    
-			    // and copies the relevant information in the ClassifierStats object
-				tmpClassStat.setNumTasks_UP(lstTasks.size());
-				tmpClassStat.setDbTasksDensity_UP(lstTasks.size() / (maxX * maxY));
-				tmpClassStat.setNumSolutionsFound_UP(tmpSolStat.getNumSolutionsFound());
-				tmpClassStat.setDblExecutionTime_UP(tmpSolStat.getDblExecutionTime());
-				tmpClassStat.setiTotServiced_UP(tmpSolStat.getiTotServices());
-				tmpClassStat.setDbTraveledDistance_UP(tmpSolStat.getDbTraveledDistance());
-				tmpClassStat.setDbCompletionTime_UP(tmpSolStat.getDbCompletionTime());
-				tmpClassStat.setDbWaitingTime_UP(tmpSolStat.getDbWaitingTime());
-				tmpClassStat.setDbTotalCosts_UP(tmpSolStat.getDbTotalCosts());
-				
-				
-				// generates another solver object using the pruned dataset 
-				Solver1 prunedProblemSolver = new Solver1(strPath, strPrunedXMLFileName);
-				
-				// launch the solver on the pruned problem with 7 threads and stores the results
-			    tmpSolStat = prunedProblemSolver.launchSolver(false, bTestSetResourcesReturnToOrigin, 24, strPath);
-
-			    // and copies the relevant information in the ClassifierStats object in the section for the pruned dataset
-				tmpClassStat.setNumTasks_P(lstPrunedTasks.size());
-				tmpClassStat.setDbTasksDensity_P(lstPrunedTasks.size() / (maxX * maxY));
-				tmpClassStat.setNumSolutionsFound_P(tmpSolStat.getNumSolutionsFound());
-				tmpClassStat.setDblExecutionTime_P(tmpSolStat.getDblExecutionTime());
-				tmpClassStat.setiTotServiced_P(tmpSolStat.getiTotServices());
-				tmpClassStat.setDbTraveledDistance_P(tmpSolStat.getDbTraveledDistance());
-				tmpClassStat.setDbCompletionTime_P(tmpSolStat.getDbCompletionTime());
-				tmpClassStat.setDbWaitingTime_P(tmpSolStat.getDbWaitingTime());
-				tmpClassStat.setDbTotalCosts_P(tmpSolStat.getDbTotalCosts());
-
-			    // add the stats and information on the model
-				tmpClassStat.setDbPrecision(eval.weightedPrecision());
-				tmpClassStat.setDbRecall(eval.weightedRecall());
-				tmpClassStat.setDbAbsCorrectlyClassified(eval.correct());
-				tmpClassStat.setDbPerCorrectlyClassified(eval.pctCorrect());
-				tmpClassStat.setDbAbsUncorrectlyClassified(eval.incorrect());
-				tmpClassStat.setDbPerUncorrectlyClassified(eval.pctIncorrect());
-				
-				// add the stats on the differences between the two executions
-				double dbExecTimDiff = tmpClassStat.getDblExecutionTime_P()-tmpClassStat.getDblExecutionTime_UP();
-				tmpClassStat.setDbAbsExecTimeDiff(dbExecTimDiff);
-				tmpClassStat.setDbPerExecTimeDiff(dbExecTimDiff/tmpClassStat.getDblExecutionTime_UP());
-				
-				double dbServicedDiff = tmpClassStat.getiTotServiced_P()-tmpClassStat.getiTotServiced_UP();
-				tmpClassStat.setDbAbsSrvcdTasksDiff(dbServicedDiff);
-				tmpClassStat.setDbPerSrvcdTasksDiff(dbServicedDiff/tmpClassStat.getiTotServiced_UP());
-				
-				// add the temp object to the list
-				lstClassifierStats.add(tmpClassStat);
-
-	    		// de-select the evaluation test set for the object currently loaded dataset (there must be only one dataset set for evaluation per loop iteration)
-	    		objForCrossValidation.setbGenerateTestSet(false);
-
-	    	}			
-
-			// writes the stats to disk
-			classifierStatsToCSV(false, strPath, "full", lstClassifierStats);
-
-/*	
-			 String[] options = new String[2];
-			 options[0] = "-t";
-			 options[1] = fileNameTestSet;
-			 System.out.println(Evaluation.evaluateModel(classifier, options));
-			 
-			for (String str : eval.getMetricsToDisplay()) {
-				PerroUtils.print(str);
-			}
-*/			
-	    } catch (IOException e) {
+	*/			
+		    } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -381,7 +404,7 @@ public class BatchClassifier {
 	 * @return			the string containing the full path and filename of the ARFF file
 	 */
 	private String generateARFFFileName(BatchConfig bcObj, ArrayList<BatchConfig> lstObj) {
-		return strPath + "/DS_"+ bcObj.getnTasks() +"_"+ bcObj.getnResources() +"_batch"+lstObj.indexOf(bcObj)+"_stats.arff";
+		return strPath + "/DS_"+ bcObj.getnTasks() +"_"+ bcObj.getnResources() +lstObj.indexOf(bcObj)+".arff";
 
 	}
 	

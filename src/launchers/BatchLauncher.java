@@ -121,6 +121,8 @@ public class BatchLauncher {
 			
 		PerroUtils.print(" Loaded " + lstConfigObj.size() + " configuration items");
 
+		int iInstancesCounter = 0;
+		
 		// main loop		
 		for (BatchConfig batchObj : lstConfigObj) {
 			
@@ -128,42 +130,54 @@ public class BatchLauncher {
 			
 			PerroUtils.print("** START OF BATCH # " + iBatchObj + " -------------------------------------------------------------");
 
-			// first of all, let's generate a dataset using the current parameters
-			GenerateDataSet dsGenerator = new GenerateDataSet();		
-			dsGenerator.GenerateDS(strFullPath, "_batch" + iBatchObj , batchObj);
-			
-			// then, let's apply a solver to it
-			Solver1 problemSolver = new Solver1(dsGenerator.getStrDataSetPath(), dsGenerator.getStrDataSetFileName());
-			
-			// generate a temp SolStats object
-			SolStats tmp = new SolStats();
-			
-			// launch the solver and stores the results
-			tmp = problemSolver.launchSolver(false, batchObj.isbResReturnToStart(), batchObj.getiNumThreads(), strFullPath);
-			
-			// sets the other variables
-			tmp.setDbMaxX(batchObj.getMaxX());
-			tmp.setDbMaxY(batchObj.getMaxY());
-			tmp.setDbTasksDensity(tmp.getNumTasks() / (tmp.getDbMaxX() * tmp.getDbMaxY()));
-			
-			// and add the stats object to the list
-			lstSolStats.add(tmp);
-			
-			// then generate statistics
-			problemSolver.generateStats();
-			// and the relevant files
-			problemSolver.generateCSV(false);
-			problemSolver.generateARFF(strFullPath, false, false);		// generate in any case the full arff file (including class labels)
-			if (batchObj.isbGenerateTestSet())				// if a test set (without labels) has to be generated then do so 
-				problemSolver.generateARFF(strFullPath, false, true);
+			int iNumInstancesOfThisKind = batchObj.getnNumInstances();
+			if (iNumInstancesOfThisKind == 0)
+				iNumInstancesOfThisKind++;
 
-			PerroUtils.print("** BATCH # " + iBatchObj + " COMPLETED ------------------------------------------------------------");
+			PerroUtils.print("Generating " + iNumInstancesOfThisKind + " instances for this item.");
+			
+			// repeat the loop per the number of repetitions specified in the xml file
+			for (int iRep = 0; iRep < iNumInstancesOfThisKind; iRep++) {
+				
+				// first of all, let's generate a dataset using the current parameters
+				GenerateDataSet dsGenerator = new GenerateDataSet();		
+				dsGenerator.GenerateDS(strFullPath, "_" + iInstancesCounter , batchObj);
+				
+				// then, let's apply a solver to it
+				Solver1 problemSolver = new Solver1(dsGenerator.getStrDataSetPath(), dsGenerator.getStrDataSetFileName());
+				
+				// generate a temp SolStats object
+				SolStats tmp = new SolStats();
+				
+				// launch the solver and stores the results
+				tmp = problemSolver.launchSolver(false, batchObj.isbResReturnToStart(), batchObj.getiNumThreads(), strFullPath);
+				
+				// sets the other variables
+				tmp.setDbMaxX(batchObj.getMaxX());
+				tmp.setDbMaxY(batchObj.getMaxY());
+				tmp.setDbTasksDensity(tmp.getNumTasks() / (tmp.getDbMaxX() * tmp.getDbMaxY()));
+				
+				// and add the stats object to the list
+				lstSolStats.add(tmp);
+				
+				// then generate statistics
+				problemSolver.generateStats();
+				// and the relevant files
+				problemSolver.generateCSV(false);
+				problemSolver.generateARFF(strFullPath, false, false);		// generate in any case the full arff file (including class labels)
+				if (batchObj.isbGenerateTestSet())				// if a test set (without labels) has to be generated then do so 
+					problemSolver.generateARFF(strFullPath, false, true);
+				
+				iInstancesCounter++;
+			}
+			
+			PerroUtils.print("** BATCH # " + iBatchObj + " COMPLETED -----------------------------------------");
 			
 		}
 		
 		generateCSV(false, strConfigFileName.substring(strConfigFileName.indexOf('/')));			// generate a CSV file with the stats for the solver's executions
 
-		PerroUtils.print("** END OF BATCH ** ----------------------------------------------------------------");
+		PerroUtils.print("** END OF BATCH ** -- generated " + (iInstancesCounter+1) + " instances --------------------------------");
 
 		return true;
 	}

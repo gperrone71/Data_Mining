@@ -26,14 +26,19 @@ public class SolStats {
 	private int iNumThreads;			// number of threads used 
 	
 	// information on the best solution found
-	private int iTotServices;			// total number of tasks serviced
+	private int iTotServiced;			// total number of tasks serviced
+	private int iTotUnserviced;			// total number of tasks NOT serviced
 	private double dbTraveledDistance;	// traveled distance for the best solution
-	private double dbTransportTime;		// transport time for the best solution
-	private double dbCompletionTime;	// completion time for the best solution
-	private double dbWaitingTime;		// waiting time for the best solution
 	private double dbTotalCosts;		// total costs for the best solution
-	private double iNumDeliveries;		// number of deliveries
+	private double dbTimeWinViolation;	// time window violations
+	private int iNumVehiclesUsed;		// number of vehicles (i.e. routes) used
     
+	// times for the best solution found
+	private double dbOperationTime;		// operation time for the best solution
+	private double dbTransportTime;		// transport time for the best solution
+	private double dbServiceTime;		// service time for the best solutions
+	private double dbWaitingTime;		// waiting time for the best solution
+	
 	
 	/**
 	 * Returns a string formatted as .csv with the data members names
@@ -92,213 +97,150 @@ public class SolStats {
 		return str.substring(0, str.length()-1);
 	}
 
-
-	
-	/**
-	 * @return the numSolutionsFound
-	 */
-	public int getNumSolutionsFound() {
-		return numSolutionsFound;
-	}
-	/**
-	 * @param numSolutionsFound the numSolutionsFound to set
-	 */
-	public void setNumSolutionsFound(int numSolutionsFound) {
-		this.numSolutionsFound = numSolutionsFound;
-	}
-	/**
-	 * @return the numResources
-	 */
 	public int getNumResources() {
 		return numResources;
 	}
-	
-	/**
-	 * @param numResources the numResources to set
-	 */
+
 	public void setNumResources(int numResources) {
 		this.numResources = numResources;
 	}
-	/**
-	 * @return the numTasks
-	 */
+
 	public int getNumTasks() {
 		return numTasks;
 	}
-	/**
-	 * @param numTasks the numTasks to set
-	 */
+
 	public void setNumTasks(int numTasks) {
 		this.numTasks = numTasks;
 	}
 
-
-	/**
-	 * @return the dbTraveledDistance
-	 */
-	public double getDbTraveledDistance() {
-		return dbTraveledDistance;
-	}
-
-	/**
-	 * @param dbTraveledDistance the dbTraveledDistance to set
-	 */
-	public void setDbTraveledDistance(double dbTraveledDistance) {
-		this.dbTraveledDistance = dbTraveledDistance;
-	}
-
-	/**
-	 * @return the dbTransportTime
-	 */
-	public double getDbTransportTime() {
-		return dbTransportTime;
-	}
-
-	/**
-	 * @param dbTransportTime the dbTransportTime to set
-	 */
-	public void setDbTransportTime(double dbTransportTime) {
-		this.dbTransportTime = dbTransportTime;
-	}
-
-	/**
-	 * @return the dbCompletionTime
-	 */
-	public double getDbCompletionTime() {
-		return dbCompletionTime;
-	}
-
-	/**
-	 * @param dbCompletionTime the dbCompletionTime to set
-	 */
-	public void setDbCompletionTime(double dbCompletionTime) {
-		this.dbCompletionTime = dbCompletionTime;
-	}
-
-	/**
-	 * @return the dbWaitingTime
-	 */
-	public double getDbWaitingTime() {
-		return dbWaitingTime;
-	}
-
-	/**
-	 * @param dbWaitingTime the dbWaitingTime to set
-	 */
-	public void setDbWaitingTime(double dbWaitingTime) {
-		this.dbWaitingTime = dbWaitingTime;
-	}
-
-	/**
-	 * @return the dbTotalCosts
-	 */
-	public double getDbTotalCosts() {
-		return dbTotalCosts;
-	}
-
-	/**
-	 * @param dbTotalCosts the dbTotalCosts to set
-	 */
-	public void setDbTotalCosts(double dbTotalCosts) {
-		this.dbTotalCosts = dbTotalCosts;
-	}
-
-	/**
-	 * @return the iNumDeliveries
-	 */
-	public double getiNumDeliveries() {
-		return iNumDeliveries;
-	}
-
-	/**
-	 * @param iNumDeliveries the iNumDeliveries to set
-	 */
-	public void setiNumDeliveries(double iNumDeliveries) {
-		this.iNumDeliveries = iNumDeliveries;
-	}
-
-	/**
-	 * @return the dblExecutionTime
-	 */
-	public double getDblExecutionTime() {
-		return dblExecutionTime;
-	}
-
-	/**
-	 * @param dblExecutionTime the dblExecutionTime to set
-	 */
-	public void setDblExecutionTime(double dblExecutionTime) {
-		this.dblExecutionTime = dblExecutionTime;
-	}
-
-	/**
-	 * @return the iNumThreads
-	 */
-	public int getiNumThreads() {
-		return iNumThreads;
-	}
-
-	/**
-	 * @param iNumThreads the iNumThreads to set
-	 */
-	public void setiNumThreads(int iNumThreads) {
-		this.iNumThreads = iNumThreads;
-	}
-
-	/**
-	 * @return the dbMaxX
-	 */
 	public double getDbMaxX() {
 		return dbMaxX;
 	}
 
-	/**
-	 * @param dbMaxX the dbMaxX to set
-	 */
 	public void setDbMaxX(double dbMaxX) {
 		this.dbMaxX = dbMaxX;
 	}
 
-	/**
-	 * @return the dbMaxY
-	 */
 	public double getDbMaxY() {
 		return dbMaxY;
 	}
 
-	/**
-	 * @param dbMaxY the dbMaxY to set
-	 */
 	public void setDbMaxY(double dbMaxY) {
 		this.dbMaxY = dbMaxY;
 	}
 
-	/**
-	 * @return the dbTasksDensity
-	 */
 	public double getDbTasksDensity() {
 		return dbTasksDensity;
 	}
 
-	/**
-	 * @param dbTasksDensity the dbTasksDensity to set
-	 */
 	public void setDbTasksDensity(double dbTasksDensity) {
 		this.dbTasksDensity = dbTasksDensity;
 	}
 
-	/**
-	 * @return the iTotServices
-	 */
-	public int getiTotServices() {
-		return iTotServices;
+	public int getNumSolutionsFound() {
+		return numSolutionsFound;
 	}
 
-	/**
-	 * @param iTotServices the iTotServices to set
-	 */
-	public void setiTotServices(int iTotServices) {
-		this.iTotServices = iTotServices;
+	public void setNumSolutionsFound(int numSolutionsFound) {
+		this.numSolutionsFound = numSolutionsFound;
 	}
 
+	public double getDblExecutionTime() {
+		return dblExecutionTime;
+	}
+
+	public void setDblExecutionTime(double dblExecutionTime) {
+		this.dblExecutionTime = dblExecutionTime;
+	}
+
+	public int getiNumThreads() {
+		return iNumThreads;
+	}
+
+	public void setiNumThreads(int iNumThreads) {
+		this.iNumThreads = iNumThreads;
+	}
+
+	public int getiTotServiced() {
+		return iTotServiced;
+	}
+
+	public void setiTotServiced(int iTotServiced) {
+		this.iTotServiced = iTotServiced;
+	}
+
+	public int getiTotUnserviced() {
+		return iTotUnserviced;
+	}
+
+	public void setiTotUnserviced(int iTotUnserviced) {
+		this.iTotUnserviced = iTotUnserviced;
+	}
+
+	public double getDbTraveledDistance() {
+		return dbTraveledDistance;
+	}
+
+	public void setDbTraveledDistance(double dbTraveledDistance) {
+		this.dbTraveledDistance = dbTraveledDistance;
+	}
+
+	public double getDbTotalCosts() {
+		return dbTotalCosts;
+	}
+
+	public void setDbTotalCosts(double dbTotalCosts) {
+		this.dbTotalCosts = dbTotalCosts;
+	}
+
+	public double getDbTimeWinViolation() {
+		return dbTimeWinViolation;
+	}
+
+	public void setDbTimeWinViolation(double dbTimeWinViolation) {
+		this.dbTimeWinViolation = dbTimeWinViolation;
+	}
+
+	public int getiNumVehiclesUsed() {
+		return iNumVehiclesUsed;
+	}
+
+	public void setiNumVehiclesUsed(int iNumVehiclesUsed) {
+		this.iNumVehiclesUsed = iNumVehiclesUsed;
+	}
+
+	public double getDbOperationTime() {
+		return dbOperationTime;
+	}
+
+	public void setDbOperationTime(double dbOperationTime) {
+		this.dbOperationTime = dbOperationTime;
+	}
+
+	public double getDbTransportTime() {
+		return dbTransportTime;
+	}
+
+	public void setDbTransportTime(double dbTransportTime) {
+		this.dbTransportTime = dbTransportTime;
+	}
+
+	public double getDbServiceTime() {
+		return dbServiceTime;
+	}
+
+	public void setDbServiceTime(double dbServiceTime) {
+		this.dbServiceTime = dbServiceTime;
+	}
+
+	public double getDbWaitingTime() {
+		return dbWaitingTime;
+	}
+
+	public void setDbWaitingTime(double dbWaitingTime) {
+		this.dbWaitingTime = dbWaitingTime;
+	}
+
+
+	
 }

@@ -45,16 +45,20 @@ public class Node {
 	/**
 	 * generateRndPosition
 	 * 
-	 * generates a random position (expressed in lat; lon coordinates in double format) for the object within boundaries [0;100]
+	 * generates a random position (expressed in lat; lon coordinates in double format) for the object within the boundaries specified by maxX and maxY
+	 * @param maxX maximum value for latitude
+	 * @param maxY maximum value for longitude
 	 * 
 	 */
 	public void generateRndPosition(int iMaxX, int iMaxY) {
-		
+
+		/*
 		if (iMaxX < 100)
 			iMaxX = 100;
 
 		if (iMaxY < 100)
 			iMaxY = 100;
+		*/
 		
 		Random numRnd = new Random();
 		

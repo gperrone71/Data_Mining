@@ -37,21 +37,36 @@ public class ClassifierStats {
 	private int numSolutionsFound_UP;		// Number of solutions found by the solver
 	private double dblExecutionTime_UP;		// Running time of the solver
 	private int iTotServiced_UP;			// total number of tasks serviced
-	private double dbTraveledDistance_UP;	// traveled distance for the best solution
-	private double dbCompletionTime_UP;	// completion time for the best solution
+	private int iTotUnserviced_UP;			// total number of tasks not serviced
+	private int iNumVehiclesUsed_UP;		// number of vehicles (i.e. routes) used
+	private double dbTimeWinViolation_UP;	// time window violations
+
+	private double dbOperationTime_UP;		// operation time for the best solution
+	private double dbServiceTime_UP;		// service time for the best solutions
 	private double dbWaitingTime_UP;		// waiting time for the best solution
-	private double dbTotalCosts_UP;		// total costs for the best solution
-    
+	private double dbTransportTime_UP;		// transport time for the best solution
+
+	private double dbTotalCosts_UP;			// total costs for the best solution
+	private double dbTraveledDistance_UP;	// traveled distance for the best solution
+
 	// Information on the PRUNED solution
-	private int numTasks_P; 			// number of the pruned tasks
-	private double dbTasksDensity_P;	// tasks density for the pruned set of tasks
+	private int numTasks_P; 				// number of the pruned tasks
+	private double dbTasksDensity_P;		// tasks density for the pruned set of tasks
 	private int numSolutionsFound_P;		// Number of solutions found by the solver
 	private double dblExecutionTime_P;		// Running time of the solver
-	private int iTotServiced_P;			// total number of tasks serviced
+	private int iTotServiced_P;				// total number of tasks serviced
+	private int iTotUnserviced_P;			// total number of tasks not serviced
+	private int iNumVehiclesUsed_P;			// number of vehicles (i.e. routes) used
+	private double dbTimeWinViolation_P;	// time window violations
+
+	private double dbOperationTime_P;		// operationtime for the best solution
+	private double dbServiceTime_P;			// service time for the best solutions
+	private double dbWaitingTime_P;			// waiting time for the best solution
+	private double dbTransportTime_P;		// transport time for the best solution
+
+	private double dbTotalCosts_P;			// total costs for the best solution
 	private double dbTraveledDistance_P;	// traveled distance for the best solution
-	private double dbCompletionTime_P;	// completion time for the best solution
-	private double dbWaitingTime_P;		// waiting time for the best solution
-	private double dbTotalCosts_P;		// total costs for the best solution
+		
 	
 	// stats on differences between the two
 	private double dbAbsExecTimeDiff;			// difference between the execution times (absolute)
@@ -129,454 +144,6 @@ public class ClassifierStats {
 		return str.substring(0, str.length()-1);
 	}
 
-	/**
-	 * @return the numResources
-	 */
-	public int getNumResources() {
-		return numResources;
-	}
-
-	/**
-	 * @param numResources the numResources to set
-	 */
-	public void setNumResources(int numResources) {
-		this.numResources = numResources;
-	}
-
-	/**
-	 * @return the dbMaxX
-	 */
-	public double getDbMaxX() {
-		return dbMaxX;
-	}
-
-	/**
-	 * @param dbMaxX the dbMaxX to set
-	 */
-	public void setDbMaxX(double dbMaxX) {
-		this.dbMaxX = dbMaxX;
-	}
-
-	/**
-	 * @return the dbMaxY
-	 */
-	public double getDbMaxY() {
-		return dbMaxY;
-	}
-
-	/**
-	 * @param dbMaxY the dbMaxY to set
-	 */
-	public void setDbMaxY(double dbMaxY) {
-		this.dbMaxY = dbMaxY;
-	}
-
-	/**
-	 * @return the iNumThreads
-	 */
-	public int getiNumThreads() {
-		return iNumThreads;
-	}
-
-	/**
-	 * @param iNumThreads the iNumThreads to set
-	 */
-	public void setiNumThreads(int iNumThreads) {
-		this.iNumThreads = iNumThreads;
-	}
-
-	/**
-	 * @return the numTasks_UP
-	 */
-	public int getNumTasks_UP() {
-		return numTasks_UP;
-	}
-
-	/**
-	 * @param numTasks_UP the numTasks_UP to set
-	 */
-	public void setNumTasks_UP(int numTasks_UP) {
-		this.numTasks_UP = numTasks_UP;
-	}
-
-	/**
-	 * @return the dbTasksDensity_UP
-	 */
-	public double getDbTasksDensity_UP() {
-		return dbTasksDensity_UP;
-	}
-
-	/**
-	 * @param dbTasksDensity_UP the dbTasksDensity_UP to set
-	 */
-	public void setDbTasksDensity_UP(double dbTasksDensity_UP) {
-		this.dbTasksDensity_UP = dbTasksDensity_UP;
-	}
-
-	/**
-	 * @return the numSolutionsFound_UP
-	 */
-	public int getNumSolutionsFound_UP() {
-		return numSolutionsFound_UP;
-	}
-
-	/**
-	 * @param numSolutionsFound_UP the numSolutionsFound_UP to set
-	 */
-	public void setNumSolutionsFound_UP(int numSolutionsFound_UP) {
-		this.numSolutionsFound_UP = numSolutionsFound_UP;
-	}
-
-	/**
-	 * @return the dblExecutionTime_UP
-	 */
-	public double getDblExecutionTime_UP() {
-		return dblExecutionTime_UP;
-	}
-
-	/**
-	 * @param dblExecutionTime_UP the dblExecutionTime_UP to set
-	 */
-	public void setDblExecutionTime_UP(double dblExecutionTime_UP) {
-		this.dblExecutionTime_UP = dblExecutionTime_UP;
-	}
-
-	/**
-	 * @return the iTotServiced_UP
-	 */
-	public int getiTotServiced_UP() {
-		return iTotServiced_UP;
-	}
-
-	/**
-	 * @param iTotServiced_UP the iTotServiced_UP to set
-	 */
-	public void setiTotServiced_UP(int iTotServiced_UP) {
-		this.iTotServiced_UP = iTotServiced_UP;
-	}
-
-	/**
-	 * @return the dbTraveledDistance_UP
-	 */
-	public double getDbTraveledDistance_UP() {
-		return dbTraveledDistance_UP;
-	}
-
-	/**
-	 * @param dbTraveledDistance_UP the dbTraveledDistance_UP to set
-	 */
-	public void setDbTraveledDistance_UP(double dbTraveledDistance_UP) {
-		this.dbTraveledDistance_UP = dbTraveledDistance_UP;
-	}
-
-	/**
-	 * @return the dbCompletionTime_UP
-	 */
-	public double getDbCompletionTime_UP() {
-		return dbCompletionTime_UP;
-	}
-
-	/**
-	 * @param dbCompletionTime_UP the dbCompletionTime_UP to set
-	 */
-	public void setDbCompletionTime_UP(double dbCompletionTime_UP) {
-		this.dbCompletionTime_UP = dbCompletionTime_UP;
-	}
-
-	/**
-	 * @return the dbWaitingTime_UP
-	 */
-	public double getDbWaitingTime_UP() {
-		return dbWaitingTime_UP;
-	}
-
-	/**
-	 * @param dbWaitingTime_UP the dbWaitingTime_UP to set
-	 */
-	public void setDbWaitingTime_UP(double dbWaitingTime_UP) {
-		this.dbWaitingTime_UP = dbWaitingTime_UP;
-	}
-
-	/**
-	 * @return the dbTotalCosts_UP
-	 */
-	public double getDbTotalCosts_UP() {
-		return dbTotalCosts_UP;
-	}
-
-	/**
-	 * @param dbTotalCosts_UP the dbTotalCosts_UP to set
-	 */
-	public void setDbTotalCosts_UP(double dbTotalCosts_UP) {
-		this.dbTotalCosts_UP = dbTotalCosts_UP;
-	}
-
-	/**
-	 * @return the numTasks_P
-	 */
-	public int getNumTasks_P() {
-		return numTasks_P;
-	}
-
-	/**
-	 * @param numTasks_P the numTasks_P to set
-	 */
-	public void setNumTasks_P(int numTasks_P) {
-		this.numTasks_P = numTasks_P;
-	}
-
-	/**
-	 * @return the dbTasksDensity_P
-	 */
-	public double getDbTasksDensity_P() {
-		return dbTasksDensity_P;
-	}
-
-	/**
-	 * @param dbTasksDensity_P the dbTasksDensity_P to set
-	 */
-	public void setDbTasksDensity_P(double dbTasksDensity_P) {
-		this.dbTasksDensity_P = dbTasksDensity_P;
-	}
-
-	/**
-	 * @return the numSolutionsFound_P
-	 */
-	public int getNumSolutionsFound_P() {
-		return numSolutionsFound_P;
-	}
-
-	/**
-	 * @param numSolutionsFound_P the numSolutionsFound_P to set
-	 */
-	public void setNumSolutionsFound_P(int numSolutionsFound_P) {
-		this.numSolutionsFound_P = numSolutionsFound_P;
-	}
-
-	/**
-	 * @return the dblExecutionTime_P
-	 */
-	public double getDblExecutionTime_P() {
-		return dblExecutionTime_P;
-	}
-
-	/**
-	 * @param dblExecutionTime_P the dblExecutionTime_P to set
-	 */
-	public void setDblExecutionTime_P(double dblExecutionTime_P) {
-		this.dblExecutionTime_P = dblExecutionTime_P;
-	}
-
-	/**
-	 * @return the iTotServiced_P
-	 */
-	public int getiTotServiced_P() {
-		return iTotServiced_P;
-	}
-
-	/**
-	 * @param iTotServiced_P the iTotServiced_P to set
-	 */
-	public void setiTotServiced_P(int iTotServiced_P) {
-		this.iTotServiced_P = iTotServiced_P;
-	}
-
-	/**
-	 * @return the dbTraveledDistance_P
-	 */
-	public double getDbTraveledDistance_P() {
-		return dbTraveledDistance_P;
-	}
-
-	/**
-	 * @param dbTraveledDistance_P the dbTraveledDistance_P to set
-	 */
-	public void setDbTraveledDistance_P(double dbTraveledDistance_P) {
-		this.dbTraveledDistance_P = dbTraveledDistance_P;
-	}
-
-	/**
-	 * @return the dbCompletionTime_P
-	 */
-	public double getDbCompletionTime_P() {
-		return dbCompletionTime_P;
-	}
-
-	/**
-	 * @param dbCompletionTime_P the dbCompletionTime_P to set
-	 */
-	public void setDbCompletionTime_P(double dbCompletionTime_P) {
-		this.dbCompletionTime_P = dbCompletionTime_P;
-	}
-
-	/**
-	 * @return the dbWaitingTime_P
-	 */
-	public double getDbWaitingTime_P() {
-		return dbWaitingTime_P;
-	}
-
-	/**
-	 * @param dbWaitingTime_P the dbWaitingTime_P to set
-	 */
-	public void setDbWaitingTime_P(double dbWaitingTime_P) {
-		this.dbWaitingTime_P = dbWaitingTime_P;
-	}
-
-	/**
-	 * @return the dbTotalCosts_P
-	 */
-	public double getDbTotalCosts_P() {
-		return dbTotalCosts_P;
-	}
-
-	/**
-	 * @param dbTotalCosts_P the dbTotalCosts_P to set
-	 */
-	public void setDbTotalCosts_P(double dbTotalCosts_P) {
-		this.dbTotalCosts_P = dbTotalCosts_P;
-	}
-
-	/**
-	 * @return the dbAbsExecTimeDiff
-	 */
-	public double getDbAbsExecTimeDiff() {
-		return dbAbsExecTimeDiff;
-	}
-
-	/**
-	 * @param dbAbsExecTimeDiff the dbAbsExecTimeDiff to set
-	 */
-	public void setDbAbsExecTimeDiff(double dbAbsExecTimeDiff) {
-		this.dbAbsExecTimeDiff = dbAbsExecTimeDiff;
-	}
-
-	/**
-	 * @return the dbPerExecTimeDiff
-	 */
-	public double getDbPerExecTimeDiff() {
-		return dbPerExecTimeDiff;
-	}
-
-	/**
-	 * @param dbPerExecTimeDiff the dbPerExecTimeDiff to set
-	 */
-	public void setDbPerExecTimeDiff(double dbPerExecTimeDiff) {
-		this.dbPerExecTimeDiff = dbPerExecTimeDiff;
-	}
-
-	/**
-	 * @return the dbAbsSrvcdTasksDiff
-	 */
-	public double getDbAbsSrvcdTasksDiff() {
-		return dbAbsSrvcdTasksDiff;
-	}
-
-	/**
-	 * @param dbAbsSrvcdTasksDiff the dbAbsSrvcdTasksDiff to set
-	 */
-	public void setDbAbsSrvcdTasksDiff(double dbAbsSrvcdTasksDiff) {
-		this.dbAbsSrvcdTasksDiff = dbAbsSrvcdTasksDiff;
-	}
-
-	/**
-	 * @return the dbPerSrvcdTasksDiff
-	 */
-	public double getDbPerSrvcdTasksDiff() {
-		return dbPerSrvcdTasksDiff;
-	}
-
-	/**
-	 * @param dbPerSrvcdTasksDiff the dbPerSrvcdTasksDiff to set
-	 */
-	public void setDbPerSrvcdTasksDiff(double dbPerSrvcdTasksDiff) {
-		this.dbPerSrvcdTasksDiff = dbPerSrvcdTasksDiff;
-	}
-
-	/**
-	 * @return the dbPrecision
-	 */
-	public double getDbPrecision() {
-		return dbPrecision;
-	}
-
-	/**
-	 * @param dbPrecision the dbPrecision to set
-	 */
-	public void setDbPrecision(double dbPrecision) {
-		this.dbPrecision = dbPrecision;
-	}
-
-	/**
-	 * @return the dbRecall
-	 */
-	public double getDbRecall() {
-		return dbRecall;
-	}
-
-	/**
-	 * @param dbRecall the dbRecall to set
-	 */
-	public void setDbRecall(double dbRecall) {
-		this.dbRecall = dbRecall;
-	}
-
-	/**
-	 * @return the dbAbsCorrectlyClassified
-	 */
-	public double getDbAbsCorrectlyClassified() {
-		return dbAbsCorrectlyClassified;
-	}
-
-	/**
-	 * @param dbAbsCorrectlyClassified the dbAbsCorrectlyClassified to set
-	 */
-	public void setDbAbsCorrectlyClassified(double dbAbsCorrectlyClassified) {
-		this.dbAbsCorrectlyClassified = dbAbsCorrectlyClassified;
-	}
-
-	/**
-	 * @return the dbPerCorrectlyClassified
-	 */
-	public double getDbPerCorrectlyClassified() {
-		return dbPerCorrectlyClassified;
-	}
-
-	/**
-	 * @param dbPerCorrectlyClassified the dbPerCorrectlyClassified to set
-	 */
-	public void setDbPerCorrectlyClassified(double dbPerCorrectlyClassified) {
-		this.dbPerCorrectlyClassified = dbPerCorrectlyClassified;
-	}
-
-	/**
-	 * @return the dbAbsUncorrectlyClassified
-	 */
-	public double getDbAbsUncorrectlyClassified() {
-		return dbAbsUncorrectlyClassified;
-	}
-
-	/**
-	 * @param dbAbsUncorrectlyClassified the dbAbsUncorrectlyClassified to set
-	 */
-	public void setDbAbsUncorrectlyClassified(double dbAbsUncorrectlyClassified) {
-		this.dbAbsUncorrectlyClassified = dbAbsUncorrectlyClassified;
-	}
-
-	/**
-	 * @return the dbPerUncorrectlyClassified
-	 */
-	public double getDbPerUncorrectlyClassified() {
-		return dbPerUncorrectlyClassified;
-	}
-
-	/**
-	 * @param dbPerUncorrectlyClassified the dbPerUncorrectlyClassified to set
-	 */
-	public void setDbPerUncorrectlyClassified(double dbPerUncorrectlyClassified) {
-		this.dbPerUncorrectlyClassified = dbPerUncorrectlyClassified;
-	}
-
 	public String getStrFullTimeStamp() {
 		return strFullTimeStamp;
 	}
@@ -593,6 +160,14 @@ public class ClassifierStats {
 		this.strTimeStampDay = strTimeStampDay;
 	}
 
+	public String getStrInstanceName() {
+		return strInstanceName;
+	}
+
+	public void setStrInstanceName(String strInstanceName) {
+		this.strInstanceName = strInstanceName;
+	}
+
 	public String getStrHash() {
 		return strHash;
 	}
@@ -601,12 +176,340 @@ public class ClassifierStats {
 		this.strHash = strHash;
 	}
 
-	public String getStrInstanceName() {
-		return strInstanceName;
+	public int getNumResources() {
+		return numResources;
 	}
 
-	public void setStrInstanceName(String strInstanceName) {
-		this.strInstanceName = strInstanceName;
+	public void setNumResources(int numResources) {
+		this.numResources = numResources;
+	}
+
+	public double getDbMaxX() {
+		return dbMaxX;
+	}
+
+	public void setDbMaxX(double dbMaxX) {
+		this.dbMaxX = dbMaxX;
+	}
+
+	public double getDbMaxY() {
+		return dbMaxY;
+	}
+
+	public void setDbMaxY(double dbMaxY) {
+		this.dbMaxY = dbMaxY;
+	}
+
+	public int getiNumThreads() {
+		return iNumThreads;
+	}
+
+	public void setiNumThreads(int iNumThreads) {
+		this.iNumThreads = iNumThreads;
+	}
+
+	public int getNumTasks_UP() {
+		return numTasks_UP;
+	}
+
+	public void setNumTasks_UP(int numTasks_UP) {
+		this.numTasks_UP = numTasks_UP;
+	}
+
+	public double getDbTasksDensity_UP() {
+		return dbTasksDensity_UP;
+	}
+
+	public void setDbTasksDensity_UP(double dbTasksDensity_UP) {
+		this.dbTasksDensity_UP = dbTasksDensity_UP;
+	}
+
+	public int getNumSolutionsFound_UP() {
+		return numSolutionsFound_UP;
+	}
+
+	public void setNumSolutionsFound_UP(int numSolutionsFound_UP) {
+		this.numSolutionsFound_UP = numSolutionsFound_UP;
+	}
+
+	public double getDblExecutionTime_UP() {
+		return dblExecutionTime_UP;
+	}
+
+	public void setDblExecutionTime_UP(double dblExecutionTime_UP) {
+		this.dblExecutionTime_UP = dblExecutionTime_UP;
+	}
+
+	public int getiTotServiced_UP() {
+		return iTotServiced_UP;
+	}
+
+	public void setiTotServiced_UP(int iTotServiced_UP) {
+		this.iTotServiced_UP = iTotServiced_UP;
+	}
+
+	public int getiTotUnserviced_UP() {
+		return iTotUnserviced_UP;
+	}
+
+	public void setiTotUnserviced_UP(int iTotUnserviced_UP) {
+		this.iTotUnserviced_UP = iTotUnserviced_UP;
+	}
+
+	public int getiNumVehiclesUsed_UP() {
+		return iNumVehiclesUsed_UP;
+	}
+
+	public void setiNumVehiclesUsed_UP(int iNumVehiclesUsed_UP) {
+		this.iNumVehiclesUsed_UP = iNumVehiclesUsed_UP;
+	}
+
+	public double getDbTraveledDistance_UP() {
+		return dbTraveledDistance_UP;
+	}
+
+	public void setDbTraveledDistance_UP(double dbTraveledDistance_UP) {
+		this.dbTraveledDistance_UP = dbTraveledDistance_UP;
+	}
+
+	public double getDbOperationTime_UP() {
+		return dbOperationTime_UP;
+	}
+
+	public void setDbOperationTime_UP(double dbOperationTime_UP) {
+		this.dbOperationTime_UP = dbOperationTime_UP;
+	}
+
+	public double getDbServiceTime_UP() {
+		return dbServiceTime_UP;
+	}
+
+	public void setDbServiceTime_UP(double dbServiceTime_UP) {
+		this.dbServiceTime_UP = dbServiceTime_UP;
+	}
+
+	public double getDbWaitingTime_UP() {
+		return dbWaitingTime_UP;
+	}
+
+	public void setDbWaitingTime_UP(double dbWaitingTime_UP) {
+		this.dbWaitingTime_UP = dbWaitingTime_UP;
+	}
+
+	public double getDbTotalCosts_UP() {
+		return dbTotalCosts_UP;
+	}
+
+	public void setDbTotalCosts_UP(double dbTotalCosts_UP) {
+		this.dbTotalCosts_UP = dbTotalCosts_UP;
+	}
+
+	public double getDbTimeWinViolation_UP() {
+		return dbTimeWinViolation_UP;
+	}
+
+	public void setDbTimeWinViolation_UP(double dbTimeWinViolation_UP) {
+		this.dbTimeWinViolation_UP = dbTimeWinViolation_UP;
+	}
+
+	public int getNumTasks_P() {
+		return numTasks_P;
+	}
+
+	public void setNumTasks_P(int numTasks_P) {
+		this.numTasks_P = numTasks_P;
+	}
+
+	public double getDbTasksDensity_P() {
+		return dbTasksDensity_P;
+	}
+
+	public void setDbTasksDensity_P(double dbTasksDensity_P) {
+		this.dbTasksDensity_P = dbTasksDensity_P;
+	}
+
+	public int getNumSolutionsFound_P() {
+		return numSolutionsFound_P;
+	}
+
+	public void setNumSolutionsFound_P(int numSolutionsFound_P) {
+		this.numSolutionsFound_P = numSolutionsFound_P;
+	}
+
+	public double getDblExecutionTime_P() {
+		return dblExecutionTime_P;
+	}
+
+	public void setDblExecutionTime_P(double dblExecutionTime_P) {
+		this.dblExecutionTime_P = dblExecutionTime_P;
+	}
+
+	public int getiTotServiced_P() {
+		return iTotServiced_P;
+	}
+
+	public void setiTotServiced_P(int iTotServiced_P) {
+		this.iTotServiced_P = iTotServiced_P;
+	}
+
+	public int getiTotUnserviced_P() {
+		return iTotUnserviced_P;
+	}
+
+	public void setiTotUnserviced_P(int iTotUnserviced_P) {
+		this.iTotUnserviced_P = iTotUnserviced_P;
+	}
+
+	public int getiNumVehiclesUsed_P() {
+		return iNumVehiclesUsed_P;
+	}
+
+	public void setiNumVehiclesUsed_P(int iNumVehiclesUsed_P) {
+		this.iNumVehiclesUsed_P = iNumVehiclesUsed_P;
+	}
+
+	public double getDbTraveledDistance_P() {
+		return dbTraveledDistance_P;
+	}
+
+	public void setDbTraveledDistance_P(double dbTraveledDistance_P) {
+		this.dbTraveledDistance_P = dbTraveledDistance_P;
+	}
+
+	public double getDbOperationTime_P() {
+		return dbOperationTime_P;
+	}
+
+	public void setDbOperationTime_P(double dbOperationTime_P) {
+		this.dbOperationTime_P = dbOperationTime_P;
+	}
+
+	public double getDbServiceTime_P() {
+		return dbServiceTime_P;
+	}
+
+	public void setDbServiceTime_P(double dbServiceTime_P) {
+		this.dbServiceTime_P = dbServiceTime_P;
+	}
+
+	public double getDbWaitingTime_P() {
+		return dbWaitingTime_P;
+	}
+
+	public void setDbWaitingTime_P(double dbWaitingTime_P) {
+		this.dbWaitingTime_P = dbWaitingTime_P;
+	}
+
+	public double getDbTotalCosts_P() {
+		return dbTotalCosts_P;
+	}
+
+	public void setDbTotalCosts_P(double dbTotalCosts_P) {
+		this.dbTotalCosts_P = dbTotalCosts_P;
+	}
+
+	public double getDbTimeWinViolation_P() {
+		return dbTimeWinViolation_P;
+	}
+
+	public void setDbTimeWinViolation_P(double dbTimeWinViolation_P) {
+		this.dbTimeWinViolation_P = dbTimeWinViolation_P;
+	}
+
+	public double getDbAbsExecTimeDiff() {
+		return dbAbsExecTimeDiff;
+	}
+
+	public void setDbAbsExecTimeDiff(double dbAbsExecTimeDiff) {
+		this.dbAbsExecTimeDiff = dbAbsExecTimeDiff;
+	}
+
+	public double getDbPerExecTimeDiff() {
+		return dbPerExecTimeDiff;
+	}
+
+	public void setDbPerExecTimeDiff(double dbPerExecTimeDiff) {
+		this.dbPerExecTimeDiff = dbPerExecTimeDiff;
+	}
+
+	public double getDbAbsSrvcdTasksDiff() {
+		return dbAbsSrvcdTasksDiff;
+	}
+
+	public void setDbAbsSrvcdTasksDiff(double dbAbsSrvcdTasksDiff) {
+		this.dbAbsSrvcdTasksDiff = dbAbsSrvcdTasksDiff;
+	}
+
+	public double getDbPerSrvcdTasksDiff() {
+		return dbPerSrvcdTasksDiff;
+	}
+
+	public void setDbPerSrvcdTasksDiff(double dbPerSrvcdTasksDiff) {
+		this.dbPerSrvcdTasksDiff = dbPerSrvcdTasksDiff;
+	}
+
+	public double getDbPrecision() {
+		return dbPrecision;
+	}
+
+	public void setDbPrecision(double dbPrecision) {
+		this.dbPrecision = dbPrecision;
+	}
+
+	public double getDbRecall() {
+		return dbRecall;
+	}
+
+	public void setDbRecall(double dbRecall) {
+		this.dbRecall = dbRecall;
+	}
+
+	public double getDbAbsCorrectlyClassified() {
+		return dbAbsCorrectlyClassified;
+	}
+
+	public void setDbAbsCorrectlyClassified(double dbAbsCorrectlyClassified) {
+		this.dbAbsCorrectlyClassified = dbAbsCorrectlyClassified;
+	}
+
+	public double getDbPerCorrectlyClassified() {
+		return dbPerCorrectlyClassified;
+	}
+
+	public void setDbPerCorrectlyClassified(double dbPerCorrectlyClassified) {
+		this.dbPerCorrectlyClassified = dbPerCorrectlyClassified;
+	}
+
+	public double getDbAbsUncorrectlyClassified() {
+		return dbAbsUncorrectlyClassified;
+	}
+
+	public void setDbAbsUncorrectlyClassified(double dbAbsUncorrectlyClassified) {
+		this.dbAbsUncorrectlyClassified = dbAbsUncorrectlyClassified;
+	}
+
+	public double getDbPerUncorrectlyClassified() {
+		return dbPerUncorrectlyClassified;
+	}
+
+	public void setDbPerUncorrectlyClassified(double dbPerUncorrectlyClassified) {
+		this.dbPerUncorrectlyClassified = dbPerUncorrectlyClassified;
+	}
+
+	public double getDbTransportTime_UP() {
+		return dbTransportTime_UP;
+	}
+
+	public void setDbTransportTime_UP(double dbTransportTime_UP) {
+		this.dbTransportTime_UP = dbTransportTime_UP;
+	}
+
+	public double getDbTransportTime_P() {
+		return dbTransportTime_P;
+	}
+
+	public void setDbTransportTime_P(double dbTransportTime_P) {
+		this.dbTransportTime_P = dbTransportTime_P;
 	}
 
 
