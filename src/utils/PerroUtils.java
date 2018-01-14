@@ -12,10 +12,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.zip.CRC32;
 import java.util.zip.Checksum;
 
 import javax.swing.JOptionPane;
+import javax.xml.soap.Node;
+
+import objects.TimeInterval;
 
 /** 
  * Collezione di piccole utils o funzioni da usare alla bisogna per semplificarsi la vita
@@ -66,12 +70,85 @@ public class PerroUtils {
 	}
 
 	/**
+	 * Dumps to a CSV contents of a List of Objects. Used to dump contents of lists to CSV for later analysis  
+	 * 
+	 * @param lstObj
+	 * @param strCSVFileName
+	 * @return True if dump successfull, false otherwise
+	 */
+	public static boolean fromListToCSV(List lstObj, String strCSVFileName) {
+
+		NumericUtils.setDefaultFormat();
+		
+		List<String> strCSVCont = new ArrayList<String>();
+		
+		String str = "";
+		if (lstObj.size() == 0)
+			return false;								// exit if the list is empty 
+
+		Class clsObj = lstObj.get(0).getClass();		// get the class of the first object 
+		
+		// get total number of fields for this class
+		int numFields = clsObj.getDeclaredFields().length;
+		
+		// gets the list of fields for this class
+		Field[] fields = clsObj.getDeclaredFields();
+		
+		// sets accessibility to true for all fields to overcome access limitations due to fields being private
+		for (int i = 0; i < numFields; i++)
+			fields[i].setAccessible(true);
+		
+		// parse the fields and creates the return string accordingly
+		for (int i = 0; i < numFields; i++ )
+			if (fields[i].getType().isAssignableFrom(Node.class))
+				str += (fields[i].getName() + "_Lat;" + fields[i].getName() + "_Lon;" );
+			else if (fields[i].getType().isAssignableFrom(TimeInterval.class))  
+				str += (fields[i].getName() + "_StartT;" + fields[i].getName() + "_EndT;" );
+			else
+				str += (fields[i].getName() + ";");
+						
+		// add the header to the list
+		strCSVCont.add(str.substring(0, str.length()-1));
+
+		PerroUtils.print(str);
+
+		str = "";
+		// now retrieve the contents of the list
+		try {
+			for (Object obj : lstObj) {
+	
+				// parse the fields and creates the return string accordingly
+				for (int i = 0; i < numFields; i++ ) {
+					if (fields[i].getType().isAssignableFrom(String.class))
+						str += (fields[i].get(obj) + ";");
+					else if( (fields[i].getType().isAssignableFrom(Node.class)) || (fields[i].getType().isAssignableFrom(TimeInterval.class)) ) 
+						str += ((fields[i].get(obj).toString() + ";"));
+					else
+						str += (fields[i].get(obj) + ";").replace('.', ',');
+				}
+				strCSVCont.add(str.substring(0, str.length()-1));
+				PerroUtils.print(str);
+				str = "";
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+		return 	PerroUtils.writeCSV(strCSVFileName, strCSVCont);
+		
+	}
+	
+	
+	/**
 	 * Reads all lines from a file and returns the content in an arraylist
 	 * 
 	 * @param 	fileName	string containing name of the file to be read
 	 * @return	ArrayList	ArrayList object containing the lines of the file read (one item per each line)
 	 */
-	public static List getFileToList(String fileName) {
+	public static List<String> getFileToList(String fileName) {
 		
 		List<String> lstString = new ArrayList<String>();
 				
@@ -145,7 +222,6 @@ public class PerroUtils {
 		}
 	}
 
-
 	/**
 	 * Calculates the CRC32 for the first 1024 bytes of the file whose name and path is passed as argument
 	 * 
@@ -185,6 +261,15 @@ public class PerroUtils {
 	   return String.format("%x", checksum.getValue());
 	}
 	 
-	
+	/**
+	 * generates and return a Random generator initialized with the current system time in milliseconds
+	 * 
+	 * @return Random generator
+	 */
+	public static Random genRandomGeneratorSeeded() {
+		Random numRnd = new Random();						// generate the Random generator
+		numRnd.setSeed(System.currentTimeMillis());			// set the current seed
+		return numRnd;
+	}
 	
 }

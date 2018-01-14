@@ -22,6 +22,17 @@ public class Node {
 	private double latitude;
 	private double longitude;
 	
+	/**
+	 * overrides normal method toString and generate a readable string
+	 * 
+	 */
+	public String toString() {
+		return (this.getLatitude() + ";" + this.getLongitude());
+	}
+	
+	public String getName() {
+		return "Lat;Lon";
+	}
 	
 	public long getId() {
 		return id;

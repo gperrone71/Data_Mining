@@ -40,7 +40,7 @@ public class BatchConfig {
 	
 	private boolean bGenerateTestSet;				// if true, a separate file w/ unlabeled instances is generated to be used as test set
 
-	// RESOURCES paramaters
+	// RESOURCES parameters
 	// space
 	private boolean bFullResourcesAvailability;		// forces all resources to have maximum availability window 
 	private boolean bResReturnToStart;				// forces origins and destinations for resources to be the same

@@ -100,7 +100,8 @@ public class Solver1 {
 			strNameOfDS = strDSName;
 		}
 		else {
-			PerroUtils.print("** FATAL: Parsing failed");
+			PerroUtils.print("** FATAL: Parsing of file " + strDSPath + strDSName + " failed");	
+			System.exit(1);			// exit with an error code
 		}
 		
 		// Parsing successful: first of all, let's create the resources (vehicles for jsprit)

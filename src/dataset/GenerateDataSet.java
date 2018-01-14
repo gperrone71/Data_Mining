@@ -208,7 +208,7 @@ public class GenerateDataSet {
 			
 			// NOTE: resources ID start from 1 since 0 is reserved for resId field in task nodes
 			rsc.setId(i+1);
-			rsc.setDescription("Technician"+i+1);
+			rsc.setDescription("Technician"+ (i+1) );
 			rsc.setRegion(1);
 			
 			// generate random time interval for availability based on the flag

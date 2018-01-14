@@ -21,6 +21,18 @@ public class TimeInterval {
 	private int endTime;
 	
 	/**
+	 * overrides normal method toString and generate a readable string
+	 * 
+	 */
+	public String toString() {
+		return (this.getStartTime() + ";" + this.getEndTime());
+	}
+	
+	public String getName() {
+		return ("StartT;EndT");
+	}
+	
+	/**
 	 * Generate a random time interval using current date and set the interval for this object
 	 * 
 	 * @param iStartingTime		minimum value that the start time can be (in minutes)

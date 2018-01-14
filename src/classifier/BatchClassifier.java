@@ -26,7 +26,7 @@ import dataset.GenerateDataSet;
 import launchers.BatchLauncher;
 import objects.*;
 import problem.Solver1;
-
+import utils.ClassifiersUtils;
 import utils.PerroUtils;
 
 import utils.XMLUtils;
@@ -291,8 +291,10 @@ public class BatchClassifier {
 
 				    // calculates maxX and maxY and density
 				    problemSolver.calcMaxAndDensity();
-				    tmpClassStat.setDbMaxX(problemSolver.getDbMaxX());
-					tmpClassStat.setDbMaxY(problemSolver.getDbMaxY());
+				    maxX = problemSolver.getDbMaxX();
+				    maxY = problemSolver.getDbMaxY();
+				    tmpClassStat.setDbMaxX(maxX);
+					tmpClassStat.setDbMaxY(maxY);
 				    
 				    // generate the information on timestamp and hash
 				    tmpClassStat.setStrFullTimeStamp(new SimpleDateFormat("dd/MM/yyyy HH.mm.ss").format(new Date()));
@@ -306,7 +308,7 @@ public class BatchClassifier {
 				    
 				    // and copies the relevant information in the ClassifierStats object
 					tmpClassStat.setNumTasks_UP(lstTasks.size());
-					tmpClassStat.setDbTasksDensity_UP(lstTasks.size() / (tmpClassStat.getDbMaxX() * tmpClassStat.getDbMaxY()));
+					tmpClassStat.setDbTasksDensity_UP(lstTasks.size() / (maxX * maxY));
 					tmpClassStat.setNumSolutionsFound_UP(tmpSolStat.getNumSolutionsFound());
 					tmpClassStat.setDblExecutionTime_UP(tmpSolStat.getDblExecutionTime());
 					tmpClassStat.setiTotServiced_UP(tmpSolStat.getiTotServiced());
@@ -373,7 +375,7 @@ public class BatchClassifier {
 		    	}			
 	
 				// writes the stats to disk
-				classifierStatsToCSV(false, strPath, "_full", lstClassifierStats);
+				ClassifiersUtils.classifierStatsToCSV(false, strPath, "_full", lstClassifierStats);
 	
 	/*	
 				 String[] options = new String[2];
@@ -418,6 +420,7 @@ public class BatchClassifier {
 		return str.substring(0, str.indexOf('.'));
 	}
 	
+	
 	/**
 	 * Generates a CSV file from the private SolStats list (containing statistics for solver's executions) and optionally prints on console its contents 
 	 * 
@@ -425,6 +428,7 @@ public class BatchClassifier {
 	 *  @param strFullPath full path (inclusive of final "/") where the csv file has to be written
 	 *  @param strNameOfBatch name of the back configuration file for which the statistics have been generated
 	 */
+	/*
 	private static void classifierStatsToCSV(boolean prtOnScreen, String strFullPath, String strNameOfBatch, ArrayList<ClassifierStats> lstInternalClassStatList) {
 		
 		List<String> strList = new ArrayList<String>();
@@ -450,6 +454,7 @@ public class BatchClassifier {
 		PerroUtils.writeCSV(strFullFileName, strList);
 	}
 
+	*/
 	
 	/**
 	 * @return the lstClassifierStats
@@ -515,7 +520,8 @@ public class BatchClassifier {
 					lstFullStats.addAll(tmp.getLstClassifierStats());
 				}
 		}
-		classifierStatsToCSV(false, "output/", "all_", lstFullStats);
+
+		ClassifiersUtils.classifierStatsToCSV(false, "output/", "all_", lstFullStats);
 
 
 		/*

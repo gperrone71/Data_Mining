@@ -25,7 +25,7 @@ import dataset.GenerateDataSet;
 import launchers.BatchLauncher;
 import objects.*;
 import problem.Solver1;
-
+import utils.ClassifiersUtils;
 import utils.PerroUtils;
 
 import utils.XMLUtils;
@@ -316,7 +316,7 @@ public class ForwardClassifier {
 					// writes the stats to disk
 					
 					evaluationStatsToCSV(false, "fwd_output/", "evaluation", lstEvaluationStats);
-					classifierStatsToCSV(false, "fwd_output/", "forward_classification", lstClassificationStats);
+					ClassifiersUtils.classifierStatsToCSV(false, "fwd_output/", "forward_classification", lstClassificationStats);
 					}
 			}	    
 	    } catch (IOException e) {
@@ -342,6 +342,7 @@ public class ForwardClassifier {
 		return str.substring(0, str.indexOf('.'));
 	}
 	
+	
 	/**
 	 * Generates a CSV file from the EvalutionStats list (containing statistics for model's evaluation statistics) and optionally prints on console its contents 
 	 * 
@@ -366,38 +367,6 @@ public class ForwardClassifier {
 		if (prtOnScreen)
 			PerroUtils.print("Writing to file: "+ strFullFileName);
 		for (EvaluationStats tmp1 : lstInternalEvalClassStatList) {
-			if (prtOnScreen) 
-				PerroUtils.print(tmp1.toString());
-			strList.add(tmp1.toString());
-		}
-		
-		PerroUtils.writeCSV(strFullFileName, strList);
-	}
-
-	/**
-	 * Generates a CSV file from the ClassifierStats list (containing statistics for solver's executions) and optionally prints on console its contents 
-	 * 
-	 *  @param boolean prtOnScreen specifies if the CSV output has to be printed on console or not
-	 *  @param strFullPath full path (inclusive of final "/") where the csv file has to be written
-	 *  @param strNameOfBatch name of the back configuration file for which the statistics have been generated
-	 */
-	private static void classifierStatsToCSV(boolean prtOnScreen, String strFullPath, String strNameOfBatch, ArrayList<ClassifierStats> lstInternalClassStatList) {
-		
-		List<String> strList = new ArrayList<String>();
-		
-		// temp stats object
-		ClassifierStats tmp = lstInternalClassStatList.get(0);		// take the first object of the list in order to be sure that all fields are populated
-
-		if (prtOnScreen)
-			PerroUtils.print(tmp.getHeaderString());
-		
-		strList.add(tmp.getHeaderString());
-		
-		String strFullFileName = strFullPath + strNameOfBatch+"_stats.csv";
-		
-		if (prtOnScreen)
-			PerroUtils.print("Writing to file: "+ strFullFileName);
-		for (ClassifierStats tmp1 : lstInternalClassStatList) {
 			if (prtOnScreen) 
 				PerroUtils.print(tmp1.toString());
 			strList.add(tmp1.toString());
